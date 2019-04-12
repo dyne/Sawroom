@@ -18,13 +18,8 @@
 <details>
  <summary><strong>:triangular_flag_on_post: Table of Contents</strong> (click to expand)</summary>
 
-* [Install](#floppy_disk-install)
-* [Usage](#video_game-usage)
 * [Docker](#whale-docker)
-* [API](#honeybee-api)
 * [Configuration](#wrench-configuration)
-* [Testing](#clipboard-testing)
-* [Troubleshooting & debugging](#bug-troubleshooting--debugging)
 * [Acknowledgements](#heart_eyes-acknowledgements)
 * [Links](#globe_with_meridians-links)
 * [Contributing](#busts_in_silhouette-contributing)
@@ -32,34 +27,15 @@
 </details>
 
 ***
-## :floppy_disk: Install
-```pip install / yard add zenroom-tp-python```
-
-***
-## :video_game: Usage
-
-TBD
-
-***
 ## :whale: Docker
 
 ```bash
-docker build -t zenroom-tp-python .
-docker run --rm -it zenroom-tp-python
+docker-compose up --build
 ```
 
 ***
-## :honeybee: API
-
-***
 ## :wrench: Configuration
-
-***
-
-## :clipboard: Testing
-
-***
-## :bug: Troubleshooting & debugging
+dotenv used the only config is `ZTP_VALIDATOR_ENDPOINT`
 
 
 ***

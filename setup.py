@@ -19,25 +19,21 @@
 ##############################################################################
 import setuptools
 
-with open("README.md", "r") as fh:
-    long_description = fh.read()
-
 setuptools.setup(
     name="zenroom-tp",
     version="0.0.1",
     author="Puria Nafisi Azizi",
     author_email="puria@dyne.org",
     description="Zenroom Transaction Processor for Hyperledger Sawtooth",
-    long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/DECODEproject/zenroom-py",
     packages=setuptools.find_packages(),
+    entry_points={"console_scripts": ["zenroom-tp-python = tp.main:main"]},
     setup_requires=["pytest-runner"],
     tests_require=[],
     install_requires=[
         "zenroom==0.2.5",
         "pre-commit==1.14.4",
-        "sawtooth-sdk==1.1.4",
         "cbor==1.0.0",
         "environs==4.1.0",
     ],

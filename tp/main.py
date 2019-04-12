@@ -20,9 +20,11 @@
 import sys
 
 from environs import Env
+from sawtooth_sdk.processor.config import get_log_dir
 from sawtooth_sdk.processor.core import TransactionProcessor
+from sawtooth_sdk.processor.log import log_configuration, init_console_logging
 
-from processor.handler import ZenroomTransactionHandler
+from tp.processor.handler import ZenroomTransactionHandler
 
 env = Env()
 env.read_env()
@@ -32,9 +34,18 @@ def main():
     try:
         url = env("ZTP_VALIDATOR_ENDPOINT", "tcp://127.0.0.1:4004")
         processor = TransactionProcessor(url=url)
+        log_dir = get_log_dir()
+        # use the transaction processor zmq identity for filename
+        log_configuration(
+            log_dir=log_dir, name="zenroom-" + str(processor.zmq_id)[2:-1]
+        )
+
+        init_console_logging()
+
         handler = ZenroomTransactionHandler()
         processor.add_handler(handler)
         processor.start()
+        print("ZENROOM TP ONLINE")
     except KeyboardInterrupt:
         pass
     except Exception as e:
