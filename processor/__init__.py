@@ -17,28 +17,3 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-import sys
-
-from environs import Env
-from sawtooth_sdk.processor.core import TransactionProcessor
-
-from processor.handler import ZenroomTransactionHandler
-
-env = Env()
-env.read_env()
-
-
-def main():
-    try:
-        url = env("ZTP_VALIDATOR_ENDPOINT", "tcp://127.0.0.1:4004")
-        processor = TransactionProcessor(url=url)
-        handler = ZenroomTransactionHandler()
-        processor.add_handler(handler)
-        processor.start()
-    except KeyboardInterrupt:
-        pass
-    except Exception as e:
-        print("Error: {}".format(e), file=sys.stderr)
-    finally:
-        if processor is not None:
-            processor.stop()
