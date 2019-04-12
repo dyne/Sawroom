@@ -28,7 +28,12 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     url="https://github.com/DECODEproject/zenroom-py",
     packages=setuptools.find_packages(),
-    entry_points={"console_scripts": ["zenroom-tp-python = tp.main:main"]},
+    entry_points={
+        "console_scripts": [
+            "zenroom-tp-python = tp.main:main",
+            "zenroom-tx = tp.client.main:main",
+        ]
+    },
     setup_requires=["pytest-runner"],
     tests_require=[],
     install_requires=[

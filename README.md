@@ -33,6 +33,12 @@
 docker-compose up --build
 ```
 
+To run a transaction
+
+```bash
+docker exec -it zenroom-tp zenroom-tx
+```
+
 ***
 ## :wrench: Configuration
 dotenv used the only config is `ZTP_VALIDATOR_ENDPOINT`

@@ -45,7 +45,7 @@ def main():
         handler = ZenroomTransactionHandler()
         processor.add_handler(handler)
         processor.start()
-        print("ZENROOM TP ONLINE")
+
     except KeyboardInterrupt:
         pass
     except Exception as e:
