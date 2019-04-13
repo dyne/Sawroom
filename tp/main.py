@@ -32,7 +32,7 @@ env.read_env()
 
 def main():
     try:
-        url = env("ZTP_VALIDATOR_ENDPOINT", "tcp://127.0.0.1:4004")
+        url = env("ZTP_VALIDATOR_ENDPOINT", "tcp://validator:4004")
         processor = TransactionProcessor(url=url)
         log_dir = get_log_dir()
         # use the transaction processor zmq identity for filename

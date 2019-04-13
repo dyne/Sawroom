@@ -1,3 +1,5 @@
+import random
+
 import cbor
 import json
 import urllib.parse
@@ -23,10 +25,15 @@ def main():
 
     payload = {
         "zencode": """
+ZEN:begin(0)
+ZEN:parse([[
 Scenario 'coconut': "coconut"
 Given that I am known as 'identifier'
 When I create my new keypair
-Then print all data"""
+Then print all data
+]])
+ZEN:run()
+"""
     }
 
     payload_bytes = cbor.dumps(payload)
@@ -40,6 +47,7 @@ Then print all data"""
         batcher_public_key=public_key.as_hex(),
         dependencies=[],
         payload_sha512=sha512(payload_bytes).hexdigest(),
+        nonce=hex(random.randint(0, 2 ** 64)),
     ).SerializeToString()
 
     signature = signer.sign(txn_header_bytes)

@@ -52,6 +52,8 @@ services:
   devmode-rust:
     image: hyperledger/sawtooth-devmode-engine-rust:latest
     container_name: devmode-engine-rust
+    environment:  
+      - RUST_BACKTRACE=1
     depends_on:
       - validator
     command: devmode-engine-rust -v --connect tcp://validator:5050

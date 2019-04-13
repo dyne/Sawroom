@@ -18,6 +18,7 @@
 #
 ##############################################################################
 import hashlib
+import logging
 import random
 import string
 
@@ -26,6 +27,7 @@ from sawtooth_sdk.processor.exceptions import InvalidTransaction, InternalError
 from sawtooth_sdk.processor.handler import TransactionHandler
 from zenroom import zenroom
 
+LOG = logging.getLogger(__name__)
 FAMILY_NAME = "zenroom"
 NAMESPACE = ADDRESS_PREFIX = hashlib.sha512(FAMILY_NAME.encode("utf-8")).hexdigest()[
     0:6
@@ -49,10 +51,11 @@ class ZenroomTransactionHandler(TransactionHandler):
 
     @property
     def namespaces(self):
-        return NAMESPACE
+        return [NAMESPACE]
 
     def apply(self, transaction, context):
-        result = zenroom.zencode(**decode_transaction(transaction))
+        result = zenroom.execute(**decode_transaction(transaction))
+        LOG.debug(result)
         save_state(context, result)
 
 
@@ -70,7 +73,7 @@ def decode_transaction(transaction):
     data = content.get("data", None)
     keys = content.get("keys", None)
 
-    return dict(zencode=zencode, data=data, keys=keys)
+    return dict(script=zencode, data=data, keys=keys)
 
 
 def save_state(context, result):
