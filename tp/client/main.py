@@ -65,6 +65,8 @@ ZEN:run()
 
     txns = [txn]
 
+    print("Transaction: " + str(txn))
+
     batch_header_bytes = BatchHeader(
         signer_public_key=public_key.as_hex(),
         transaction_ids=[txn.header_signature for txn in txns],

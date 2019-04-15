@@ -30,6 +30,63 @@ To facilitate the creation of transaction families based on Zenroom and the [Zen
 </details>
 
 ***
+
+## :play-button: Bash
+
+We have included a bash script `xec.sh` which automates some common commands you might want to run.
+
+### Pre-requisites (OSX)
+
+```
+brew install automake pkg-config libtool libffi gmp
+python3 ./setup.py install
+```
+
+You will need an osx build of the zenroom-py module. Assuming you have checked out and built zenroom-py in the same top-levele dir as this repo...
+
+```
+. ./.sawtooth-tp.venv/bin/activate
+pip uninstall zenroom
+pip install ../zenroom-py/dist/zenroom-0.1.3.tar.gz 
+
+```
+
+
+To get started
+
+```
+./xec.sh install
+```
+
+This will create an alias so you only need to type `xec` from now on.
+
+```bash
+xec init
+xec up
+xec petition
+```
+
+This will initialise the docker compose file and build a local docker image for the zenroom transaction processor. It then brings up 
+the set of services we need, which are:
+
+| docker-compose service | Container name         | purpose |
+| ---------------------- | ---------------------- | ------- |
+| validator              | sawtooth-validator     | Main "node" of the blockchain which executes and validates transactions |
+| zenroom-tp             | zenroom-tp             | The transaction processor that executes zencode
+| rest-api               | rest-api               | Provides a http / json adaptor over the zeromq protocol to allow clients to talk to the validator from within and also from the host machine|
+| shell                  | sawtooth-shell-default | Provides a container with various commands in it which allows you to connect to the rest api from within the docker network | 
+| settings-tp            | settings-tp            | A standard transaction processor that allows settings to be configured in the blockchainsd
+
+The key ones are the validator, the rest-api and the zenroom-tp.
+
+The rest-api allows us too communicate with the validator inside the docker netowrk from our host.
+
+The `xec petition` runs a python script called `scripts/execute_petition.py` which runs through all the steps needed to create and sign a petition.
+
+It basically makes calls to the rest api, which can be found on `http:/localhost:8090/`
+
+
+
 ## :whale: Docker
 
 ```bash
