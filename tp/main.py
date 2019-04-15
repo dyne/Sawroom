@@ -41,7 +41,6 @@ def main():
         )
 
         init_console_logging()
-
         handler = ZenroomTransactionHandler()
         processor.add_handler(handler)
         processor.start()
