@@ -25,14 +25,7 @@ def main():
 
     payload = {
         "zencode": """
-ZEN:begin(0)
-ZEN:parse([[
-Scenario 'coconut': "coconut"
-Given that I am known as 'identifier'
-When I create my new keypair
-Then print all data
-]])
-ZEN:run()
+        print('hello')
 """
     }
 

@@ -19,8 +19,6 @@
 ##############################################################################
 import hashlib
 import logging
-import random
-import string
 
 import cbor as cbor
 from sawtooth_sdk.processor.exceptions import InvalidTransaction, InternalError
@@ -35,9 +33,8 @@ NAMESPACE = ADDRESS_PREFIX = hashlib.sha512(FAMILY_NAME.encode("utf-8")).hexdige
 
 
 def generate_address():
-    # FIXME: THIS IS A RANDOM GENERATED NAME. IN THE FUTURE SOMETHING MEANINGFUL... SHOULD BE! cit. yoda
-    name = "".join(random.choice(string.ascii_lowercase) for _ in range(10))
-    return NAMESPACE + hashlib.sha512(name.encode("utf-8")).hexdigest()[-64:]
+    # FIXME: THIS IS A FIXED NAME. IN THE FUTURE SOMETHING MEANINGFUL... SHOULD BE! cit. yoda
+    return NAMESPACE + hashlib.sha512("zenroom".encode("utf-8")).hexdigest()[-64:]
 
 
 class ZenroomTransactionHandler(TransactionHandler):
