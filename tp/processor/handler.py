@@ -19,6 +19,7 @@
 ##############################################################################
 import hashlib
 import logging
+import json
 
 import cbor as cbor
 from sawtooth_sdk.processor.exceptions import InvalidTransaction, InternalError
@@ -51,9 +52,10 @@ class ZenroomTransactionHandler(TransactionHandler):
         return [NAMESPACE]
 
     def apply(self, transaction, context):
-        result = zenroom.execute(**decode_transaction(transaction))
-        LOG.debug(result)
-        save_state(context, result)
+        result, _ = zenroom.execute(**decode_transaction(transaction))
+        json_result = json.dumps(json.loads(result), sort_keys=True)
+        LOG.debug(json_result)
+        save_state(context, json_result)
 
 
 def decode_transaction(transaction):
