@@ -44,6 +44,7 @@ setuptools.setup(
         "sawtooth-sdk",
         "sawtooth-signing",
         "environs==4.1.0",
+        "requests"
     ],
     python_requires=">=3.5",
     project_urls={

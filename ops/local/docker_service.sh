@@ -32,27 +32,31 @@ function logs {
 }
 
 function start {
-    echo -e "\nStarting local docker container with chainspace (run [${SCRIPT_HOME}/chainspace.sh docker-logs] to see details)\n"
-    ${DOCKER_COMMAND} start chainspace
+    echo -e "\nStarting local docker container with ${SERVICE_NAME} (run [${SCRIPT_HOME}/docker_service.sh docker-logs] to see details)\n"
+    ${DOCKER_COMMAND} start ${SERVICE_NAME}
     lib/wait_for_service ${CHAINSPACE_API_URL}
     status
 }
 
 function stop {
-    echo "Stopping local chainspace docker container ...\n"
-    ${DOCKER_COMMAND} stop chainspace
-    echo -e "\nChainspace stopped."
+    echo "Stopping local ${SERVICE_NAME} docker container ...\n"
+    ${DOCKER_COMMAND} stop ${SERVICE_NAME}
+    echo -e "\${SERVICE_NAME} stopped."
 }
 
 function restart {
-    echo "Restarting local chainspace docker container ...\n"
-    ${DOCKER_COMMAND} restart chainspace
-    echo -e "\Chainspace stopped."
+    echo "Restarting local  docker container ...\n"
+    ${DOCKER_COMMAND} restart
+    echo -e "${SERVICE_NAME} stopped."
 }
 
 function shell {
     ${DOCKER_COMMAND} exec ${SERVICE_NAME} bash
 }
 
+function rebuild {
+   ${DOCKER_COMMAND} build ${SERVICE_NAME}
+   ${DOCKER_COMMAND} restart ${SERVICE_NAME}
+}
 
 lib/process_commands $@
