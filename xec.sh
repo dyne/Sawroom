@@ -59,7 +59,7 @@ function shell {
 }
 
 function petition {
-    source ./.zenroom-tp.venv/bin/activate && ./scripts/execute_petition.py
+    source ./.zenroom-tp.venv/bin/activate && ${PWD}/scripts/execute_petition.py
 }
 
 lib/process_commands $@
