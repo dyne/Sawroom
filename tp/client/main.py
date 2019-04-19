@@ -24,6 +24,7 @@ def main():
     signer = CryptoFactory(context).new_signer(private_key)
 
     payload = {
+        "context-id": "petition-001",
         "zencode": """
 ZEN:begin(0)
 ZEN:parse([[
