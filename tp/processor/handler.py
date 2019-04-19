@@ -52,7 +52,9 @@ class ZenroomTransactionHandler(TransactionHandler):
         return [NAMESPACE]
 
     def apply(self, transaction, context):
-        result, _ = zenroom.execute(**decode_transaction(transaction))
+        args = decode_transaction(transaction)
+        LOG.debug("Executing Zencode: " + args["script"])
+        result, _ = zenroom.execute(**args)
         json_result = json.dumps(json.loads(result), sort_keys=True)
         LOG.debug(json_result)
         save_state(context, json_result)
