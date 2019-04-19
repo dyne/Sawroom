@@ -62,4 +62,8 @@ function petition {
     source ./.zenroom-tp.venv/bin/activate && ${PWD}/scripts/execute_petition.py
 }
 
+function rebuild {
+    down && init && up
+}
+
 lib/process_commands $@
