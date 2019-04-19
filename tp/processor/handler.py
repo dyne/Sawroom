@@ -26,6 +26,8 @@ from sawtooth_sdk.processor.exceptions import InvalidTransaction, InternalError
 from sawtooth_sdk.processor.handler import TransactionHandler
 from zenroom import zenroom
 
+
+
 LOG = logging.getLogger(__name__)
 FAMILY_NAME = "zenroom"
 NAMESPACE = ADDRESS_PREFIX = hashlib.sha512(FAMILY_NAME.encode("utf-8")).hexdigest()[
@@ -52,12 +54,20 @@ class ZenroomTransactionHandler(TransactionHandler):
         return [NAMESPACE]
 
     def apply(self, transaction, context):
-        args = decode_transaction(transaction)
-        LOG.debug("Executing Zencode: " + args["script"])
-        result, _ = zenroom.execute(**args)
-        json_result = json.dumps(json.loads(result), sort_keys=True)
-        LOG.debug(json_result)
-        save_state(context, json_result)
+        try:
+            args = decode_transaction(transaction)
+            context_id = args["context_id"]
+            LOG.debug("Context Id: " + context_id)
+
+            del(args["context_id"])
+            LOG.debug("Executing Zencode: " + args["script"])
+            result, _ = zenroom.execute(**args)
+            json_result = json.dumps(json.loads(result), sort_keys=True)
+            LOG.debug(json_result)
+            save_state(context, json_result)
+        except Exception:
+            LOG.exception("Exception saving state")
+            #raise InvalidTransaction("An error happened tying to process tx, see logs") This doesnt seem to halt processing
 
 
 def decode_transaction(transaction):
@@ -73,8 +83,9 @@ def decode_transaction(transaction):
 
     data = content.get("data", None)
     keys = content.get("keys", None)
+    context_id = content.get("context-id", None)
 
-    return dict(script=zencode, data=data, keys=keys)
+    return dict(script=zencode, data=data, keys=keys, context_id=context_id)
 
 
 def save_state(context, result):
