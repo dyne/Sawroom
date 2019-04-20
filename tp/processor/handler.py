@@ -92,8 +92,9 @@ def save_state(context, result):
     address = generate_address()
     state = dict(address=result)
     encoded = cbor.dumps(state)
-
-    addresses = context.set_state({address: encoded})
+    state = {address: encoded}
+    LOG.debug("Saving state: " + str(state))
+    addresses = context.set_state(state)
 
     if not addresses:
         raise InternalError("State error")
