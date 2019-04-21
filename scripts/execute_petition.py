@@ -5,18 +5,21 @@ import random
 import string
 import time
 import hashlib
+
+import base64
 import requests
 import pprint
 import yaml
 import urllib.parse
 import urllib.request
+import uuid
 
 import cbor
 from sawtooth_sdk.protobuf.batch_pb2 import Batch, BatchList, BatchHeader
 from sawtooth_sdk.protobuf.transaction_pb2 import Transaction, TransactionHeader
 from sawtooth_signing import CryptoFactory, create_context
 
-pp = pprint.PrettyPrinter(indent=4)
+pp = pprint.PrettyPrinter(indent=4, width=2)
 
 
 def pp_json(json_str):
@@ -24,16 +27,13 @@ def pp_json(json_str):
 
 
 def pp_object(obj):
-    print("Type : " + str(type(obj)))
     pp.pprint(obj)
 
 
 print("Executing a Petition On Sawtooth!")
 
 FAMILY_NAME = "zenroom"
-NAMESPACE = ADDRESS_PREFIX = hashlib.sha512(FAMILY_NAME.encode("utf-8")).hexdigest()[
-                             0:6
-                             ]
+NAMESPACE = ADDRESS_PREFIX = hashlib.sha512(FAMILY_NAME.encode("utf-8")).hexdigest()[0:6]
 
 
 def generate_address(petitionId):
@@ -211,8 +211,10 @@ public_key = context.get_public_key(private_key)
 
 signer = CryptoFactory(context).new_signer(private_key)
 
+petition_id = "petition-{}".format(uuid.uuid4())
+
 payload = {
-    "context-id": "petition-001",
+    "context-id": petition_id,
     "zencode": """
 ZEN:begin(0)
 ZEN:parse([[
@@ -254,7 +256,7 @@ txn = Transaction(
 
 txns = [txn]
 
-print("Transaction: " + str(txn))
+print("Transaction: {}".format(txn))
 
 batch_header_bytes = BatchHeader(
     signer_public_key=public_key.as_hex(),
@@ -281,6 +283,46 @@ try:
     data = response.read()
     encoding = response.info().get_content_charset("utf-8")
     response_body = json.loads(data.decode(encoding))
-    print(response_body)
+    pp_object(response_body)
 except urllib.error.URLError:
     print("error: " + response)
+
+
+def generate_address(context_id):
+    return family_namespace + hashlib.sha512(context_id.encode("utf-8")).hexdigest()[-64:]
+
+
+address = generate_address(petition_id)
+
+print("Sleeping for 1 second to wait for tx to commit...")
+time.sleep(1)
+print("Going to try and retrieve the state @ address : " + address)
+
+try:
+    url = "http://localhost:8090/state/{}".format(address)
+    request = urllib.request.Request(
+        url,
+        batch_list_bytes,
+        method="GET"
+    )
+
+    response = urllib.request.urlopen(request)
+    data = response.read()
+    encoding = response.info().get_content_charset("utf-8")
+    response_body = json.loads(data.decode(encoding))
+
+except urllib.error.URLError:
+    print("error: {}".format(response))
+
+data_encoded = response_body['data']
+
+data_decoded = base64.b64decode(data_encoded)
+
+data = cbor.loads(data_decoded)
+
+
+print("\nGET {} HTTP/1.0".format(url))
+print("Petition ID: {}".format(data['context_id']))
+print("Zencode Output:")
+pp_json(data['zencode_output'])
+

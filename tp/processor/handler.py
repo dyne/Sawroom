@@ -35,9 +35,8 @@ NAMESPACE = ADDRESS_PREFIX = hashlib.sha512(FAMILY_NAME.encode("utf-8")).hexdige
 ]
 
 
-def generate_address():
-    # FIXME: THIS IS A FIXED NAME. IN THE FUTURE SOMETHING MEANINGFUL... SHOULD BE! cit. yoda
-    return NAMESPACE + hashlib.sha512("zenroom".encode("utf-8")).hexdigest()[-64:]
+def generate_address(context_id):
+    return NAMESPACE + hashlib.sha512(context_id.encode("utf-8")).hexdigest()[-64:]
 
 
 class ZenroomTransactionHandler(TransactionHandler):
@@ -64,7 +63,7 @@ class ZenroomTransactionHandler(TransactionHandler):
             result, _ = zenroom.execute(**args)
             json_result = json.dumps(json.loads(result), sort_keys=True)
             LOG.debug(json_result)
-            save_state(context, json_result)
+            save_state(context, context_id, json_result)
         except Exception:
             LOG.exception("Exception saving state")
             #raise InvalidTransaction("An error happened tying to process tx, see logs") This doesnt seem to halt processing
@@ -88,12 +87,13 @@ def decode_transaction(transaction):
     return dict(script=zencode, data=data, keys=keys, context_id=context_id)
 
 
-def save_state(context, result):
-    address = generate_address()
-    state = dict(address=result)
-    encoded = cbor.dumps(state)
-    state = {address: encoded}
-    LOG.debug("Saving state: " + str(state))
+def save_state(context, context_id, result):
+    state = dict(context_id=context_id, zencode_output=result)
+    encoded_state = cbor.dumps(state)
+
+    address = generate_address(context_id)
+    state = {address: encoded_state}
+    LOG.debug("Saving state with context_id [{}] as : {}".format(context_id, state))
     addresses = context.set_state(state)
 
     if not addresses:
