@@ -32,6 +32,8 @@ def pp_object(obj):
 
 print("Executing a Petition On Sawtooth!")
 
+print("Running a zenroom contract")
+
 
 family_name = "zenroom"
 family_version = "1.0"
