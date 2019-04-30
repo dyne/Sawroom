@@ -3,6 +3,9 @@
 SCRIPT_HOME=$(cd $(dirname ${BASH_SOURCE[0]}) && pwd)
 ROOT_DIR=${SCRIPT_HOME}/../../..
 
+cd ${ROOT_DIR}
+
+git submodule init
 
 #sudo unlink /app/contracts
 #sudo ln -sf ${PWD}/contracts /app/contracts
