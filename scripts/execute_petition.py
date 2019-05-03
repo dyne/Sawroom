@@ -83,21 +83,22 @@ def generate_citizen_keypair_and_credential(issuer_keypair):
     return citizen_keypair, citizen_credential
 
 
-print("Generating citizen keypair...")
+def setup_petition():
+    print("Generating citizen keypair...")
 
-issuer_keypair = execute_contract(CONTRACTS.CREDENTIAL_ISSUER_GENERATE_KEYPAIR)
-issuer_verification_public_key = execute_contract(CONTRACTS.CREDENTIAL_ISSUER_PUBLISH_VERIFY,
-                                                  keys=issuer_keypair)
+    issuer_keypair = execute_contract(CONTRACTS.CREDENTIAL_ISSUER_GENERATE_KEYPAIR)
+    issuer_verification_public_key = execute_contract(CONTRACTS.CREDENTIAL_ISSUER_PUBLISH_VERIFY,
+                                                      keys=issuer_keypair)
 
-citizen_A_keypair, citizen_A_credential = generate_citizen_keypair_and_credential(issuer_keypair)
+    citizen_A_keypair, citizen_A_credential = generate_citizen_keypair_and_credential(issuer_keypair)
 
-zen_petition = execute_contract(CONTRACTS.CITIZEN_CREATE_PETITION,
-                                keys=citizen_A_credential,
-                                data=issuer_verification_public_key)
+    zen_petition = execute_contract(CONTRACTS.CITIZEN_CREATE_PETITION,
+                                    keys=citizen_A_credential,
+                                    data=issuer_verification_public_key)
 
-petition_approved = execute_contract(CONTRACTS.VERIFIER_APPROVE_PETITION,
-                                     keys=issuer_verification_public_key,
-                                     data=zen_petition)
+    petition_approved = execute_contract(CONTRACTS.VERIFIER_APPROVE_PETITION,
+                                         keys=issuer_verification_public_key,
+                                         data=zen_petition)
 
 
 family_name = "zenroom"
