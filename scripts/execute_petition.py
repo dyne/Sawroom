@@ -99,7 +99,6 @@ petition_approved = execute_contract(CONTRACTS.VERIFIER_APPROVE_PETITION,
                                      keys=issuer_verification_public_key,
                                      data=zen_petition)
 
-exit(-1)
 
 family_name = "zenroom"
 family_version = "1.0"

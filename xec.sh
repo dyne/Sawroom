@@ -22,7 +22,6 @@ function docker {
 }
 
 function init {
-    ./ops/local/init.sh $@
     docker init
 }
 
