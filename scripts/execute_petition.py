@@ -105,11 +105,15 @@ def setup_petition():
 
 petition_id = "petition-{}".format(uuid.uuid4())
 
-
-
 zs_client = zs.ZenSawClient()
 
-zs_client.send_transaction(petition_id)
+zencode = """Scenario 'coconut': "Count the petition results: any Citizen can count the petition as long as they have the 'tally'"
+Given that I receive a petition
+and I receive a tally
+When I count the petition results
+Then print all data
+"""
+zs_client.send_transaction(petition_id, zencode)
 
 print("Sleeping for 1 second to wait for tx to commit...")
 time.sleep(1)

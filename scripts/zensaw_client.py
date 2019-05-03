@@ -35,17 +35,12 @@ class ZenSawClient(object):
 
         self.signer = CryptoFactory(self.context).new_signer(self.private_key)
 
-    def send_transaction(self, petition_id):
+    def send_transaction(self, petition_id, zencode):
         payload = {
             "context-id": petition_id,
             "zencode": """
 ZEN:begin(0)
-ZEN:parse([[
-Scenario 'coconut': "Count the petition results: any Citizen can count the petition as long as they have the 'tally'"
-Given that I receive a petition
-and I receive a tally
-When I count the petition results
-Then print all data
+ZEN:parse([[""" + zencode + """
 ]])
 ZEN:run()
         """,
