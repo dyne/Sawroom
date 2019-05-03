@@ -44,6 +44,9 @@ class ZenContract(object):
         self._error = None
         self.zencode = get_contract(self.name)
 
+    def get_zencode(self):
+        return self.zencode.decode()
+
     def execute(self):
         if log.isEnabledFor(logging.DEBUG):  # pragma: no cover
             log.debug("+" * 50)
