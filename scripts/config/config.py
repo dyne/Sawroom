@@ -3,7 +3,7 @@ from configparser import ConfigParser
 from os.path import dirname, abspath, join
 from os import getenv
 
-CONFIG_FILE_ENV = "DDDC_PETITION_CHAINSPACE_ENV"
+CONFIG_FILE_ENV = "ZENROOM_TP_CONFIG_ENV"
 DEFAULT_CONFIG_FILENAME = "config.ini"
 
 
@@ -32,7 +32,7 @@ class BaseConfig(object):
 
     @property
     def logger(self):
-        return logging.getLogger("gunicorn.error")
+        return logging.getLogger("zenroom-tp")
 
     def get(self, name):
         return self.values.get("DEFAULT", name)

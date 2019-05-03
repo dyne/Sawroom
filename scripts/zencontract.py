@@ -4,6 +4,8 @@ from zenroom.zenroom import Error
 from scripts.config.config import BaseConfig
 from scripts.utils import get_contract
 
+import logging
+
 
 class CONTRACTS:
     CITIZEN_KEYGEN = "01-CITIZEN-credential-keygen.zencode"
@@ -43,17 +45,20 @@ class ZenContract(object):
         self.zencode = get_contract(self.name)
 
     def execute(self):
-        if config.getboolean("debug"):  # pragma: no cover
+        if log.isEnabledFor(logging.DEBUG):  # pragma: no cover
             log.debug("+" * 50)
             log.debug("EXECUTING %s" % self.name)
             log.debug("+" * 50)
             log.debug("DATA: %s" % self.data())
             log.debug("KEYS: %s" % self.keys())
-            log.debug("CODE: \n%s" % self.zencode.decode())
+            log.debug("CODE: \n%s" % self.zencode)
         try:
-            result, errors = zenroom.execute(
-                self.zencode, keys=self._keys, data=self._data
+            result, errors = zenroom.zencode(
+                self.zencode, keys=self._keys, data=self._data, verbosity=0
             )
+            if log.isEnabledFor(logging.DEBUG):  # pragma: no cover
+                log.debug(errors)
+                log.debug(result.decode())
             self._error = errors
             return result.decode()
         except Error:
