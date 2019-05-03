@@ -101,7 +101,6 @@ class ZenSawClient(object):
             url = "http://localhost:8090/state/{}".format(address)
             request = urllib.request.Request(
                 url,
-                batch_list_bytes,
                 method="GET"
             )
 
