@@ -86,7 +86,6 @@ class ZenSawClient(object):
             encoding = response.info().get_content_charset("utf-8")
             response_body = json.loads(data.decode(encoding))
             pp_object(response_body)
-            return batch_list_bytes
 
         except urllib.error.URLError:
             print("error: " + response)
@@ -94,7 +93,7 @@ class ZenSawClient(object):
     def generate_address(self, context_id):
         return self.family_namespace + hashlib.sha512(context_id.encode("utf-8")).hexdigest()[-64:]
 
-    def read_state(self, petition_id, batch_list_bytes):
+    def read_state(self, petition_id):
         address = self.generate_address(petition_id)
 
         try:

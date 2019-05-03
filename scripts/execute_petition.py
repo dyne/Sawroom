@@ -128,11 +128,11 @@ ZEN:run()
 
 zs_client = zs.ZenSawClient()
 
-batch_list_bytes = zs_client.send_transaction(petition_id, payload)
+zs_client.send_transaction(petition_id, payload)
 
 print("Sleeping for 1 second to wait for tx to commit...")
 time.sleep(1)
 print("Going to try and retrieve the state for petition: " + petition_id)
 
 
-zs_client.read_state(petition_id, batch_list_bytes)
+zs_client.read_state(petition_id)
