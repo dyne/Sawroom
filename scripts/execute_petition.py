@@ -3,20 +3,23 @@ import base64
 import hashlib
 import json
 import pprint
-import random
 import sys
 import time
+
+import random
 import urllib.request
 import uuid
 
 import cbor
-from sawtooth_sdk.protobuf.batch_pb2 import Batch, BatchList, BatchHeader
-from sawtooth_sdk.protobuf.transaction_pb2 import Transaction, TransactionHeader
-from sawtooth_signing import CryptoFactory, create_context
+
+
 
 sys.path.insert(0, ".")  # TODO use the dir of this file not whoever is calling us
 
 from scripts.zencontract import ZenContract, CONTRACTS
+
+import scripts.zensaw_client as zs
+
 import logging
 
 logging.basicConfig(level=logging.INFO)
@@ -36,7 +39,6 @@ def pp_json(json_str):
 
 
 def pp_object(obj):
-    print("OBJECT")
     pp.pprint(obj)
 
 
@@ -101,16 +103,6 @@ def setup_petition():
                                          data=zen_petition)
 
 
-family_name = "zenroom"
-family_version = "1.0"
-family_namespace = hashlib.sha512(family_name.encode("utf-8")).hexdigest()[0:6]
-
-context = create_context("secp256k1")
-private_key = context.new_random_private_key()
-public_key = context.get_public_key(private_key)
-
-signer = CryptoFactory(context).new_signer(private_key)
-
 petition_id = "petition-{}".format(uuid.uuid4())
 
 payload = {
@@ -134,93 +126,13 @@ ZEN:run()
         """,
 }
 
-payload_bytes = cbor.dumps(payload)
+zs_client = zs.ZenSawClient()
 
-txn_header_bytes = TransactionHeader(
-    family_name=family_name,
-    family_version=family_version,
-    inputs=[family_namespace],
-    outputs=[family_namespace],
-    signer_public_key=public_key.as_hex(),
-    batcher_public_key=public_key.as_hex(),
-    dependencies=[],
-    payload_sha512=hashlib.sha512(payload_bytes).hexdigest(),
-    nonce=hex(random.randint(0, 2 ** 64)),
-).SerializeToString()
-
-signature = signer.sign(txn_header_bytes)
-
-txn = Transaction(
-    header=txn_header_bytes, header_signature=signature, payload=payload_bytes
-)
-
-txns = [txn]
-
-print("Transaction: {}".format(txn))
-
-batch_header_bytes = BatchHeader(
-    signer_public_key=public_key.as_hex(),
-    transaction_ids=[txn.header_signature for txn in txns],
-).SerializeToString()
-
-signature = signer.sign(batch_header_bytes)
-
-batch = Batch(
-    header=batch_header_bytes, header_signature=signature, transactions=txns
-)
-
-batch_list_bytes = BatchList(batches=[batch]).SerializeToString()
-
-try:
-    request = urllib.request.Request(
-        "http://localhost:8090/batches",
-        batch_list_bytes,
-        method="POST",
-        headers={"Content-Type": "application/octet-stream"},
-    )
-
-    response = urllib.request.urlopen(request)
-    data = response.read()
-    encoding = response.info().get_content_charset("utf-8")
-    response_body = json.loads(data.decode(encoding))
-    pp_object(response_body)
-except urllib.error.URLError:
-    print("error: " + response)
-
-
-def generate_address(context_id):
-    return family_namespace + hashlib.sha512(context_id.encode("utf-8")).hexdigest()[-64:]
-
-
-address = generate_address(petition_id)
+batch_list_bytes = zs_client.send_transaction(petition_id, payload)
 
 print("Sleeping for 1 second to wait for tx to commit...")
 time.sleep(1)
-print("Going to try and retrieve the state @ address : " + address)
+print("Going to try and retrieve the state for petition: " + petition_id)
 
-try:
-    url = "http://localhost:8090/state/{}".format(address)
-    request = urllib.request.Request(
-        url,
-        batch_list_bytes,
-        method="GET"
-    )
 
-    response = urllib.request.urlopen(request)
-    data = response.read()
-    encoding = response.info().get_content_charset("utf-8")
-    response_body = json.loads(data.decode(encoding))
-
-except urllib.error.URLError:
-    print("error: {}".format(response))
-
-data_encoded = response_body['data']
-
-data_decoded = base64.b64decode(data_encoded)
-
-data = cbor.loads(data_decoded)
-
-print("\nGET {} HTTP/1.0".format(url))
-print("Petition ID: {}".format(data['context_id']))
-print("Zencode Output:")
-pp_json(data['zencode_output'])
+zs_client.read_state(petition_id, batch_list_bytes)
