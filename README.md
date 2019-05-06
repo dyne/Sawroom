@@ -39,7 +39,19 @@ docker-compose up --build
 To run a transaction
 
 ```bash
-docker exec -it zenroom-tp zenroom-tx
+docker exec -it zenroom-tp zenroom-tx --help
+```
+
+shows you all the commands available of the little zenroom-tx cli interface
+
+#### keygen
+```bash
+docker exec -it zenroom-tp zenroom-tx keygen FILENAME
+```
+
+#### transaction
+```bash
+docker exec -it zenroom-tp zenroom-tx transaction --help
 ```
 
 ***

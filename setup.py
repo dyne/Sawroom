@@ -37,10 +37,12 @@ setuptools.setup(
     setup_requires=["pytest-runner"],
     tests_require=[],
     install_requires=[
-        "zenroom==0.2.5",
-        "pre-commit==1.14.4",
+        "click==7.0",
         "cbor==1.0.0",
+        "zenroom==0.2.5",
+        "colorama==0.4.1",
         "environs==4.1.0",
+        "pre-commit==1.16.0",
     ],
     python_requires=">=3.5",
     project_urls={

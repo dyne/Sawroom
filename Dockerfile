@@ -1,5 +1,8 @@
 FROM ubuntu:bionic
 
+ENV LC_ALL C.UTF-8
+ENV LANG C.UTF-8
+
 RUN apt-get update \
  && apt-get install gnupg -y
 
