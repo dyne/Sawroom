@@ -56,15 +56,15 @@ class ZenroomTransactionHandler(TransactionHandler):
             context_id = args["context_id"]
             LOG.debug("Context Id: " + context_id)
 
-            del(args["context_id"])
+            del (args["context_id"])
             LOG.debug("Executing Zencode: " + args["script"])
-            result, _ = zenroom.execute(**args)
+            result, _ = zenroom.zencode(**args)
             json_result = json.dumps(json.loads(result), sort_keys=True)
             LOG.debug(json_result)
             save_state(context, context_id, json_result)
         except Exception:
             LOG.exception("Exception saving state")
-            #raise InvalidTransaction("An error happened tying to process tx, see logs") This doesnt seem to halt processing
+            # raise InvalidTransaction("An error happened tying to process tx, see logs") This doesnt seem to halt processing
 
 
 def decode_transaction(transaction):

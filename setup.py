@@ -43,6 +43,8 @@ setuptools.setup(
         "colorama==0.4.1",
         "environs==4.1.0",
         "pre-commit==1.16.0",
+        "sawtooth-sdk==1.1.5",
+        "sawtooth-signing==1.1.5",
     ],
     python_requires=">=3.5",
     project_urls={
