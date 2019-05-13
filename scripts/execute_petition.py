@@ -97,11 +97,6 @@ zen_petition = execute_contract(CONTRACTS.CITIZEN_CREATE_PETITION,
                                 keys=citizen_A_credential,
                                 data=issuer_verification_public_key)
 
-petition_approved = execute_contract(CONTRACTS.VERIFIER_APPROVE_PETITION,
-                                     keys=issuer_verification_public_key,
-                                     data=zen_petition)
-
-
 petition_id = "petition-{}".format(uuid.uuid4())
 
 zs_client = zs.ZenSawClient()
