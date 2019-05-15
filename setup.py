@@ -37,7 +37,7 @@ setuptools.setup(
     setup_requires=["pytest-runner"],
     tests_require=[],
     install_requires=[
-        "zenroom==0.2.5",
+        "zenroom==0.3.0",
         "pre-commit==1.14.4",
         "cbor==1.0.0",
         "colorlog",
