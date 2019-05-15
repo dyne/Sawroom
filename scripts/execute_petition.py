@@ -45,6 +45,11 @@ def pp_object(obj):
 print("Executing a Petition On Sawtooth!")
 
 
+def load_zencode(contract_name):
+    contract = ZenContract(contract_name)
+    return contract.get_zencode()
+
+
 def execute_contract(contract_name, keys=None, data=None):
     contract = ZenContract(contract_name)
     contract.keys(keys)
@@ -101,14 +106,7 @@ petition_id = "petition-{}".format(uuid.uuid4())
 
 zt_client = zs.ZenToothClient()
 
-zencode = """Scenario 'coconut': "Approve the creation of a petition: executed by a Citizen, using several keys"
-Given that I use the verification key by 'issuer_identifier'
-and I receive a new petition request
-When I aggregate all the verification keys
-and I verify the new petition to be valid
-Then print all data
-"""
-
+zencode = load_zencode(CONTRACTS.VERIFIER_APPROVE_PETITION)
 
 zt_client.send_transaction(petition_id, zencode, data=zen_petition, keys=issuer_verification_public_key)
 
