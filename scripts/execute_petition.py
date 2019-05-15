@@ -18,7 +18,7 @@ sys.path.insert(0, ".")  # TODO use the dir of this file not whoever is calling 
 
 from scripts.zencontract import ZenContract, CONTRACTS
 
-import scripts.zensaw_client as zs
+import scripts.zentooth_client as zs
 
 import logging
 
@@ -99,7 +99,7 @@ zen_petition = execute_contract(CONTRACTS.CITIZEN_CREATE_PETITION,
 
 petition_id = "petition-{}".format(uuid.uuid4())
 
-zs_client = zs.ZenSawClient()
+zt_client = zs.ZenToothClient()
 
 zencode = """Scenario 'coconut': "Approve the creation of a petition: executed by a Citizen, using several keys"
 Given that I use the verification key by 'issuer_identifier'
@@ -110,11 +110,11 @@ Then print all data
 """
 
 
-zs_client.send_transaction(petition_id, zencode, data=zen_petition, keys=issuer_verification_public_key)
+zt_client.send_transaction(petition_id, zencode, data=zen_petition, keys=issuer_verification_public_key)
 
 print("Sleeping for 2 second to wait for tx to commit...")
 time.sleep(2)
 print("Going to try and retrieve the state for petition: " + petition_id)
 
 
-zs_client.read_state(petition_id)
+zt_client.read_state(petition_id)

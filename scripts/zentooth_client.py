@@ -22,7 +22,7 @@ def pp_object(obj):
     pprint.pprint(obj)
 
 
-class ZenSawClient(object):
+class ZenToothClient(object):
 
     def __init__(self):
         self.family_name = "zenroom"
