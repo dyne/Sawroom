@@ -141,5 +141,5 @@ ZEN:run()
         print("Zencode Output:")
         pp_json(data['output'])
 
-
+        return data
 

@@ -138,15 +138,38 @@ petition_with_signature = execute_contract(CONTRACTS.LEDGER_INCREMENT_PETITION,
                                            data=citizen_A_signature)
 
 
-# petition_validation = execute_contract(CONTRACTS.LEDGER_VALIDATE_PETITION,
-#                                        data=petition_with_signature)
-
-wait_for(5)
-
 zencode = load_zencode(CONTRACTS.LEDGER_VALIDATE_PETITION)
 zt_client.send_transaction(petition_id, zencode, data=petition_with_signature, keys=None)
 
 
 wait_for()
 
-zt_client.read_state(petition_id)
+state_1 = zt_client.read_state(petition_id)
+
+petition_before_signature = state_1['data']
+
+print("####################################################################################################\n")
+print("Citizen B signature: ")
+
+citizen_B_keypair, citizen_B_credential = generate_citizen_keypair_and_credential(issuer_keypair)
+citizen_B_signature = execute_contract(CONTRACTS.CITIZEN_SIGN_PETITION,
+                                       keys=citizen_B_credential,
+                                       data=issuer_verification_public_key)
+
+print("Adding signature to petition...")
+
+
+petition_after_signature = execute_contract(CONTRACTS.LEDGER_INCREMENT_PETITION,
+                                           keys=petition_before_signature,
+                                           data=citizen_B_signature)
+
+
+zencode = load_zencode(CONTRACTS.LEDGER_VALIDATE_PETITION)
+zt_client.send_transaction(petition_id, zencode, data=petition_after_signature, keys=None)
+
+
+wait_for()
+
+state_2 = zt_client.read_state(petition_id)
+
+print("####################################################################################################\n")
