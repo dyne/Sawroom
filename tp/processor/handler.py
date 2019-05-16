@@ -20,6 +20,7 @@
 import hashlib
 import logging
 import json
+import pprint
 
 import cbor as cbor
 from sawtooth_sdk.processor.exceptions import InvalidTransaction, InternalError
@@ -62,7 +63,9 @@ class ZenroomTransactionHandler(TransactionHandler):
             LOG.debug("Executing Zencode: " + args["script"])
             result, _ = zenroom.execute(**args)
             json_result = json.dumps(json.loads(result), sort_keys=True)
-            LOG.debug(json_result)
+            #LOG.debug(json_result)
+            LOG.debug("Zencode Output:")
+            pprint.pprint(json.loads(json_result), width=1)
             save_state(context, context_id, json_result)
         except Exception:
             LOG.exception("Exception saving state")
@@ -93,8 +96,9 @@ def save_state(context, context_id, result):
 
     address = generate_address(context_id)
     state = {address: encoded_state}
-    LOG.debug("Saving state with context_id [{}] as : {}".format(context_id, state))
+    LOG.debug("Saving state with context_id [{}]".format(context_id))
     addresses = context.set_state(state)
+    LOG.debug("Saved state at address [{}]".format(addresses[0]))
 
     if not addresses:
         raise InternalError("State error")

@@ -70,6 +70,12 @@ def execute_contract(contract_name, keys=None, data=None):
     return res
 
 
+def wait_for(timer=2):
+    print("Sleeping for 2 second to wait for tx to commit...")
+    time.sleep(timer)
+    print("Going to try and retrieve the state for petition: " + petition_id)
+
+
 # Generate a citizen keypair and credential (equivalent to "sign_petition_crypto" in the python version
 # Which returns a private key and "sigma" which is the credential
 def generate_citizen_keypair_and_credential(issuer_keypair):
@@ -106,13 +112,43 @@ petition_id = "petition-{}".format(uuid.uuid4())
 
 zt_client = zs.ZenToothClient()
 
+# Verify the petition and store it on the ledger:
+
 zencode = load_zencode(CONTRACTS.VERIFIER_APPROVE_PETITION)
 
 zt_client.send_transaction(petition_id, zencode, data=zen_petition, keys=issuer_verification_public_key)
 
-print("Sleeping for 2 second to wait for tx to commit...")
-time.sleep(2)
-print("Going to try and retrieve the state for petition: " + petition_id)
+wait_for()
 
+zt_client.read_state(petition_id)
+
+
+# Sign the petition
+print("Citizen A signature: ")
+
+
+citizen_A_signature = execute_contract(CONTRACTS.CITIZEN_SIGN_PETITION,
+                                       keys=citizen_A_credential,
+                                       data=issuer_verification_public_key)
+
+print("Adding signature to petition...")
+
+
+petition_with_signature = execute_contract(CONTRACTS.LEDGER_INCREMENT_PETITION,
+                                           keys=zen_petition,
+                                           data=citizen_A_signature)
+
+
+petition_with_signature_2 = execute_contract(CONTRACTS.LEDGER_INCREMENT_PETITION,
+                                           keys=zen_petition,
+                                           data=citizen_A_signature)
+
+# wait_for(10)
+#
+# zencode = load_zencode(CONTRACTS.LEDGER_INCREMENT_PETITION)
+# zt_client.send_transaction(petition_id, zencode, data=citizen_A_signature, keys=zen_petition)
+
+
+wait_for()
 
 zt_client.read_state(petition_id)
