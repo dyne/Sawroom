@@ -95,13 +95,20 @@ def generate_citizen_keypair_and_credential(issuer_keypair):
     return citizen_keypair, citizen_credential
 
 
-print("Generating citizen keypair...")
+print("####################################################################################################\n")
+print("Generating Issuer keypair...")
 
 issuer_keypair = execute_contract(CONTRACTS.CREDENTIAL_ISSUER_GENERATE_KEYPAIR)
 issuer_verification_public_key = execute_contract(CONTRACTS.CREDENTIAL_ISSUER_PUBLISH_VERIFY,
                                                   keys=issuer_keypair)
 
 citizen_A_keypair, citizen_A_credential = generate_citizen_keypair_and_credential(issuer_keypair)
+
+
+print("####################################################################################################\n")
+print("Create Petition...")
+
+# @TODO - interpolate the petition ID into the CREATE petition script
 
 zen_petition = execute_contract(CONTRACTS.CITIZEN_CREATE_PETITION,
                                 keys=citizen_A_credential,
@@ -122,13 +129,16 @@ wait_for()
 zt_client.read_state(petition_id)
 
 
-# Sign the petition
+print("####################################################################################################\n")
+
 print("Citizen A signature: ")
 
 
 citizen_A_signature = execute_contract(CONTRACTS.CITIZEN_SIGN_PETITION,
                                        keys=citizen_A_credential,
                                        data=issuer_verification_public_key)
+
+print("####################################################################################################\n")
 
 print("Adding signature to petition...")
 
@@ -172,23 +182,32 @@ wait_for()
 
 state_2 = zt_client.read_state(petition_id)
 
+petition_with_all_signatures = state_2['data']
+
 print("####################################################################################################\n")
 
 print("Tally petition")
 
-petition_with_all_signatures = state_2['data']
 
 tally = execute_contract(CONTRACTS.CITIZEN_TALLY_PETITION,
                          keys=citizen_A_credential,
                          data=petition_with_all_signatures)
 
 
+
 print("####################################################################################################\n")
 
 print("Show results petition")
 
-tally_count = execute_contract(CONTRACTS.CITIZEN_COUNT_PETITION,
-                               keys=tally,
-                               data=petition_with_all_signatures)
+# tally_count = execute_contract(CONTRACTS.CITIZEN_COUNT_PETITION,
+#                                keys=tally,
+#                                data=petition_with_all_signatures)
+
+zencode = load_zencode(CONTRACTS.CITIZEN_COUNT_PETITION)
+zt_client.send_transaction(petition_id, zencode, data=petition_with_all_signatures, keys=tally)
+
+wait_for()
+
+final_state = zt_client.read_state(petition_id)
 
 print("####################################################################################################\n")
