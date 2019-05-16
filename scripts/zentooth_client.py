@@ -131,8 +131,15 @@ ZEN:run()
 
         print("\nGET {} HTTP/1.0".format(url))
         print("Petition ID: {}".format(data['context_id']))
+
+        print("Zencode:")
+        print(data['zencode'])
+
+        print("Zencode Data:")
+        pp_json(data['data'])
+
         print("Zencode Output:")
-        pp_json(data['zencode_output'])
+        pp_json(data['output'])
 
 
 

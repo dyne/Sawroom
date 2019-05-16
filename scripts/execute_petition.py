@@ -144,7 +144,7 @@ petition_with_signature = execute_contract(CONTRACTS.LEDGER_INCREMENT_PETITION,
 wait_for(5)
 
 zencode = load_zencode(CONTRACTS.LEDGER_VALIDATE_PETITION)
-zt_client.send_transaction(petition_id, zencode, data=citizen_A_signature, keys=zen_petition)
+zt_client.send_transaction(petition_id, zencode, data=petition_with_signature, keys=None)
 
 
 wait_for()

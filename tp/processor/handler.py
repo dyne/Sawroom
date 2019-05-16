@@ -62,11 +62,17 @@ class ZenroomTransactionHandler(TransactionHandler):
             del(args["context_id"])
             LOG.debug("Executing Zencode: " + args["script"])
             result, _ = zenroom.execute(**args)
+
+            json_data = json.dumps(json.loads(args["data"]), sort_keys=True)
             json_result = json.dumps(json.loads(result), sort_keys=True)
-            #LOG.debug(json_result)
-            LOG.debug("Zencode Output:")
+
+            LOG.debug("Zencode Data: <-----")
+            pprint.pprint(json.loads(json_data), width=1)
+
+            LOG.debug("Zencode Output: ----->")
             pprint.pprint(json.loads(json_result), width=1)
-            save_state(context, context_id, json_result)
+
+            save_state(context, context_id, args["script"], json_data, json_result)
         except Exception:
             LOG.exception("Exception saving state")
             #raise InvalidTransaction("An error happened tying to process tx, see logs") This doesnt seem to halt processing
@@ -90,8 +96,8 @@ def decode_transaction(transaction):
     return dict(script=zencode, data=data, keys=keys, context_id=context_id)
 
 
-def save_state(context, context_id, result):
-    state = dict(context_id=context_id, zencode_output=result)
+def save_state(context, context_id, zencode, data, result):
+    state = dict(context_id=context_id, zencode=zencode, data=data, output=result)
     encoded_state = cbor.dumps(state)
 
     address = generate_address(context_id)
