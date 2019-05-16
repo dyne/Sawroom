@@ -27,6 +27,7 @@ class CONTRACTS:
     CITIZEN_SIGN_PETITION = "11-CITIZEN-sign-petition.zencode"
 
     LEDGER_INCREMENT_PETITION = "12-LEDGER-add-signed-petition.zencode"
+    LEDGER_VALIDATE_PETITION = "51-LEDGER-validate-petition.zencode"
 
     CITIZEN_TALLY_PETITION = "13-CITIZEN-tally-petition.zencode"
     CITIZEN_COUNT_PETITION = "14-CITIZEN-count-petition.zencode"

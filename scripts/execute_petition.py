@@ -71,9 +71,8 @@ def execute_contract(contract_name, keys=None, data=None):
 
 
 def wait_for(timer=2):
-    print("Sleeping for 2 second to wait for tx to commit...")
+    print("Sleeping for {} second...".format(timer))
     time.sleep(timer)
-    print("Going to try and retrieve the state for petition: " + petition_id)
 
 
 # Generate a citizen keypair and credential (equivalent to "sign_petition_crypto" in the python version
@@ -139,14 +138,13 @@ petition_with_signature = execute_contract(CONTRACTS.LEDGER_INCREMENT_PETITION,
                                            data=citizen_A_signature)
 
 
-petition_with_signature_2 = execute_contract(CONTRACTS.LEDGER_INCREMENT_PETITION,
-                                           keys=zen_petition,
-                                           data=citizen_A_signature)
+# petition_validation = execute_contract(CONTRACTS.LEDGER_VALIDATE_PETITION,
+#                                        data=petition_with_signature)
 
-# wait_for(10)
-#
-# zencode = load_zencode(CONTRACTS.LEDGER_INCREMENT_PETITION)
-# zt_client.send_transaction(petition_id, zencode, data=citizen_A_signature, keys=zen_petition)
+wait_for(5)
+
+zencode = load_zencode(CONTRACTS.LEDGER_VALIDATE_PETITION)
+zt_client.send_transaction(petition_id, zencode, data=citizen_A_signature, keys=zen_petition)
 
 
 wait_for()
