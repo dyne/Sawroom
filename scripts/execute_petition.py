@@ -173,3 +173,22 @@ wait_for()
 state_2 = zt_client.read_state(petition_id)
 
 print("####################################################################################################\n")
+
+print("Tally petition")
+
+petition_with_all_signatures = state_2['data']
+
+tally = execute_contract(CONTRACTS.CITIZEN_TALLY_PETITION,
+                         keys=citizen_A_credential,
+                         data=petition_with_all_signatures)
+
+
+print("####################################################################################################\n")
+
+print("Show results petition")
+
+tally_count = execute_contract(CONTRACTS.CITIZEN_COUNT_PETITION,
+                               keys=tally,
+                               data=petition_with_all_signatures)
+
+print("####################################################################################################\n")
