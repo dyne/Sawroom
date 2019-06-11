@@ -94,6 +94,7 @@ def generate_citizen_keypair_and_credential(issuer_keypair):
 
     return citizen_keypair, citizen_credential
 
+# @TODO - Interpolate Citizen id and issuer names into contracts
 
 print("####################################################################################################\n")
 print("Generating Issuer keypair...")
@@ -101,6 +102,11 @@ print("Generating Issuer keypair...")
 issuer_keypair = execute_contract(CONTRACTS.CREDENTIAL_ISSUER_GENERATE_KEYPAIR)
 issuer_verification_public_key = execute_contract(CONTRACTS.CREDENTIAL_ISSUER_PUBLISH_VERIFY,
                                                   keys=issuer_keypair)
+
+
+print("####################################################################################################\n")
+print("Generating Citizen A keypair...")
+
 
 citizen_A_keypair, citizen_A_credential = generate_citizen_keypair_and_credential(issuer_keypair)
 

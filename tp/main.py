@@ -34,13 +34,9 @@ def main():
     try:
         url = env("ZTP_VALIDATOR_ENDPOINT", "tcp://validator:4004")
         processor = TransactionProcessor(url=url)
-        log_dir = get_log_dir()
-        # use the transaction processor zmq identity for filename
-        log_configuration(
-            log_dir=log_dir, name="zenroom-" + str(processor.zmq_id)[2:-1]
-        )
 
-        init_console_logging()
+        initialise_logging(processor)
+
         handler = ZenroomTransactionHandler()
         processor.add_handler(handler)
         processor.start()
@@ -52,3 +48,12 @@ def main():
     finally:
         if processor is not None:
             processor.stop()
+
+
+def initialise_logging(processor):
+    log_dir = get_log_dir()
+    # use the transaction processor zmq identity for filename
+    log_configuration(
+        log_dir=log_dir, name="zenroom-" + str(processor.zmq_id)[2:-1]
+    )
+    init_console_logging()
