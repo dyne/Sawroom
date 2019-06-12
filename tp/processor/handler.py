@@ -22,7 +22,7 @@ import logging
 import json
 
 import cbor as cbor
-from sawtooth_sdk.processor.exceptions import InvalidTransaction, InternalError
+from sawtooth_sdk.processor.exceptions import InvalidTransaction
 from sawtooth_sdk.processor.handler import TransactionHandler
 from zenroom import zenroom
 
@@ -58,13 +58,15 @@ class ZenroomTransactionHandler(TransactionHandler):
 
             del (args["context_id"])
             LOG.debug("Executing Zencode: " + args["script"])
-            result, _ = zenroom.zencode(**args)
+            LOG.debug(args)
+            result, _ = zenroom.zencode_exec(**args)
+            LOG.debug(_)
             json_result = json.dumps(json.loads(result), sort_keys=True)
             LOG.debug(json_result)
             save_state(context, context_id, json_result)
         except Exception:
             LOG.exception("Exception saving state")
-            # raise InvalidTransaction("An error happened tying to process tx, see logs") This doesnt seem to halt processing
+            raise InvalidTransaction("An error happened tying to process tx, see logs")
 
 
 def decode_transaction(transaction):
@@ -92,7 +94,7 @@ def save_state(context, context_id, result):
     address = generate_address(context_id)
     state = {address: encoded_state}
     LOG.debug("Saving state with context_id [{}] as : {}".format(context_id, state))
-    addresses = context.set_state(state)
-
-    if not addresses:
-        raise InternalError("State error")
+    try:
+        context.set_state(state)
+    except Exception:
+        raise InvalidTransaction("State error")

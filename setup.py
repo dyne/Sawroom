@@ -39,7 +39,7 @@ setuptools.setup(
     install_requires=[
         "click==7.0",
         "cbor==1.0.0",
-        "zenroom==0.2.5",
+        "zenroom==1.0.3",
         "colorama==0.4.1",
         "environs==4.1.0",
         "pre-commit==1.16.0",

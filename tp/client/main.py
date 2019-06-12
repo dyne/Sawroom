@@ -84,7 +84,7 @@ def transaction(private_key, data, keys, context_id, address, zencode):
         "zencode": zencode.read().decode(),
         "context-id": context_id,
         "data": data.read().decode() if data else None,
-        "keys": keys.read().decode() if data else None,
+        "keys": keys.read().decode() if keys else None,
     }
 
     payload_bytes = cbor.dumps(payload)
@@ -135,5 +135,5 @@ def transaction(private_key, data, keys, context_id, address, zencode):
         encoding = response.info().get_content_charset("utf-8")
         response_body = json.loads(data.decode(encoding))
         click.secho(str(response_body), fg="green")
-    except urllib.error.URLError as e:
-        print(f"error: {e}")
+    except urllib.error.URLError:
+        click.secho("ADDRESS ERROR: please double check your -a option", fg="red")
