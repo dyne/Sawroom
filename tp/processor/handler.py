@@ -20,8 +20,9 @@
 import hashlib
 import logging
 import json
+import requests
 
-import cbor as cbor
+import cbor
 from sawtooth_sdk.processor.exceptions import InvalidTransaction
 from sawtooth_sdk.processor.handler import TransactionHandler
 from zenroom import zenroom
@@ -38,6 +39,10 @@ def generate_address(context_id):
 
 
 class ZenroomTransactionHandler(TransactionHandler):
+    def __init__(self, url):
+        super()
+        self.url = url
+
     @property
     def family_name(self):
         return FAMILY_NAME
@@ -50,17 +55,27 @@ class ZenroomTransactionHandler(TransactionHandler):
     def namespaces(self):
         return [NAMESPACE]
 
+    def retrieve_payload(self):
+        payload = ""
+        r = requests.get(f"{self.url}/blocks")
+        data = r.json()
+        blocks = data["data"][0]["batches"]
+        for b in blocks:
+            payload += b["transactions"][0]["payload"]
+
+        return payload
+
     def apply(self, transaction, context):
         try:
-            args = decode_transaction(transaction)
-            context_id = args["context_id"]
-            LOG.debug("Context Id: " + context_id)
-
-            del (args["context_id"])
-            LOG.debug("Executing Zencode: " + args["script"])
-            LOG.debug(args)
-            result, _ = zenroom.zencode_exec(**args)
-            LOG.debug(_)
+            script, data, keys, context_id = decode_transaction(transaction)
+            LOG.debug(f"Context Id: ${context_id}\nExecuting Zencode: ${script}")
+            payload = self.retrieve_payload()
+            result, _ = zenroom.zencode_exec_rng(
+                script=script,
+                data=data,
+                keys=keys,
+                random_seed=bytearray(payload, "utf=8"),
+            )
             json_result = json.dumps(json.loads(result), sort_keys=True)
             LOG.debug(json_result)
             save_state(context, context_id, json_result)
@@ -84,7 +99,7 @@ def decode_transaction(transaction):
     keys = content.get("keys", None)
     context_id = content.get("context-id", None)
 
-    return dict(script=zencode, data=data, keys=keys, context_id=context_id)
+    return zencode, data, keys, context_id
 
 
 def save_state(context, context_id, result):
@@ -93,7 +108,7 @@ def save_state(context, context_id, result):
 
     address = generate_address(context_id)
     state = {address: encoded_state}
-    LOG.debug("Saving state with context_id [{}] as : {}".format(context_id, state))
+    LOG.debug(f"Saving state with context_id [{context_id}] as : {state}")
     try:
         context.set_state(state)
     except Exception:

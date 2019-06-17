@@ -33,6 +33,7 @@ env.read_env()
 def main():
     try:
         url = env("ZTP_VALIDATOR_ENDPOINT", "tcp://validator:4004")
+        rest_api = env("ZTP_REST_ENDPOINT", "http://rest-api:8090")
         processor = TransactionProcessor(url=url)
         log_dir = get_log_dir()
         # use the transaction processor zmq identity for filename
@@ -41,7 +42,7 @@ def main():
         )
 
         init_console_logging()
-        handler = ZenroomTransactionHandler()
+        handler = ZenroomTransactionHandler(url=rest_api)
         processor.add_handler(handler)
         processor.start()
 
