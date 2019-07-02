@@ -1,0 +1,31 @@
+site_name: Zentooth
+site_url: https://decodeproject.github.io/Zentooth
+repo_url: https://github.com/decodeproject/zentooth
+site_author: Puria
+site_description: Zenroom Transaction Processor for Hyperledger Sawtooth capable to process smart contracts written in human language
+copyright: Copyright (C) 2019 by the <a href="https://dyne.org">Dyne.org foundation</a>. The source code is licensed <a href="https://www.gnu.org/licenses/agpl-3.0.en.html">AGPLv3</a>.
+
+extra:
+  links:
+    docker: https://hub.docker.com/r/decodeproject/zentooth
+  drift_handle: s64nd7w43g53
+  nav:
+    subtitle: Zenroom Transaction Processor for Hyperledger Sawtooth
+  h2020: 732546 (DECODE)
+    # logo: null # /img/redroom-trans.png
+    # og_image_large: /img/logo-trans.png
+
+
+plugins: []
+
+extra_css:
+  - //fonts.googleapis.com/css?family=Montserrat&display=swap
+  - css/custom.css
+
+markdown_extensions:
+  - admonition
+  - codehilite
+
+theme:
+  name: null
+  custom_dir: 'mkdocs-dyne-theme/'
