@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Blockchain smart-contracts in human language - Zentooth</title>
+		<link rel="stylesheet" href="./assets/css/bulma.min.css">
+		<link rel="stylesheet" href="./assets/css/bulma-dyne.css">
+
+		<link rel="stylesheet" href="//cdn.materialdesignicons.com/3.7.95/css/materialdesignicons.min.css">
+		
+		<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Montserrat&display=swap">
+		
+		<link rel="stylesheet" href="css/custom.css">
+		
+
+	</head>
+	<body>
+		<nav class="navbar has-shadow is-transparent">
+    <div class="navbar-brand">
+        <a class="navbar-item" href="/">
+			
+            <h1 class="title">Zentooth</h1>
+			
+        </a>
+        <!-- <div class="navbar-burger burger" data-target="navbarExampleTransparentExample">
+             <span></span>
+             <span></span>
+             <span></span>
+             </div> -->
+    </div>
+	
+	<div id="navbarExampleTransparentExample" class="navbar-menu">
+        <div class="navbar-start">
+			<div class="navbar-item">
+				Zenroom Transaction Processor for Hyperledger Sawtooth
+			</div>
+		</div>
+	</div>
+	
+	<!-- 
+		 <div id="navbarExampleTransparentExample" class="navbar-menu">
+         <div class="navbar-start">
+         
+         
+         <a class="navbar-item" href="">
+         Blockchain smart-contracts in human language
+         </a>
+         
+         
+         </div>
+	-->
+        <div class="navbar-end">
+            <div class="navbar-item">
+                <div class="field is-grouped">
+                    <!-- TODO: demo button
+						 <p class="control">
+                         <a class="button is-primary" href="">
+                         <span class="icon">
+                         <i class="mdi mdi-download"></i>
+                         </span>
+                         <span>Download</span>
+                         </a>
+						 </p> -->
+                    <p class="control">
+                        <a href="https://dyne.org">
+                            <img src="https://img.shields.io/badge/made%20with%20%E2%9D%A4%20by-Dyne.org-turquoise.svg?style=for-the-badge&logo=gnu" alt="Made with love by Dyne.org" title="We are free to share code and we code to share Freedom"></a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+		<section class="section">
+			<div class="container">
+				<div class="columns">
+					<div class="column is-one-quarter">
+						<aside class="menu">
+    
+    <h1 class="menu-label">
+        <span class="mdi mdi-fire has-text-danger"></span> Quick Links</h1>
+    <ul class="menu-list" style="list-style: none">
+        
+        <li><span class="mdi mdi-github-circle"></span><a href="https://github.com/decodeproject/zentooth/">Source Code</a></li>
+        
+        
+        
+        <li><span class="mdi mdi-docker"></span><a href="https://hub.docker.com/r/decodeproject/zentooth">Docker image</a></li>
+        
+        
+        
+    </ul>
+    
+
+    <hr width="20%">
+
+    <h1 class="menu-label">
+        <span class="mdi mdi-format-list-numbered has-text-primary"></span> Table of Contents</h1>
+	
+    
+    <ul class="menu-list">
+        <li>
+	<a href="#blockchain-smart-contracts-in-human-language">Blockchain smart-contracts in human language</a>
+	
+    <ul>
+      
+        <li>
+	<a href="#quick-start">Quick start</a>
+	
+    <ul>
+      
+        <li>
+	<a href="#keygen">keygen</a>
+	
+</li>
+      
+        <li>
+	<a href="#transaction">transaction</a>
+	
+</li>
+      
+    </ul>
+  
+</li>
+      
+        <li>
+	<a href="#configuration">Configuration</a>
+	
+</li>
+      
+        <li>
+	<a href="#acknowledgements">Acknowledgements</a>
+	
+</li>
+      
+        <li>
+	<a href="#license">License</a>
+	
+</li>
+      
+    </ul>
+  
+</li>
+    </ul>
+    
+	
+</aside>
+					</div>
+					<div class="column">
+						<div class="content">
+							 <h1 id="blockchain-smart-contracts-in-human-language">Blockchain smart-contracts in human language</h1>
+<p>Zentooth integrates the <a href="https://zenroom.dyne.org">Zenroom VM</a> to be used as a transaction processor in the <a href="https://sawtooth.hyperledger.org/">Sawtooth</a> blockchain distributed by the Linux Foundation's <a href="https://www.hyperledger.org/">Hyperledger</a> consortium.</p>
+<p>To facilitate the creation of transaction families based on Zenroom and the <a href="https://decodeproject.eu/blog/smart-contracts-english-speaker">Zencode human-friendly language for smart-contracts</a>, the Zentooth TP uses the <a href="https://sawtooth.hyperledger.org/docs/core/releases/latest/sdks.html">Sawtooth SDK</a> in Python and the <a href="https://github.com/DECODEproject/zenroom-py">zenroom-py</a> bindings.</p>
+<h2 id="quick-start">Quick start</h2>
+<p>To try the Zentooth setup with a running Sawtooth is best to use the docker-compose inside docker-dyne-software repository:</p>
+<div class="codehilite"><pre><span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="o">:</span><span class="c1">//github.com/dyne/docker-dyne-software</span>
+<span class="n">cd</span> <span class="n">zentooth</span>
+<span class="n">docker</span><span class="o">-</span><span class="n">compose</span> <span class="n">up</span> <span class="o">--</span><span class="n">build</span>
+</pre></div>
+
+
+<p>Once all daemons are running, to run a transaction see:</p>
+<div class="codehilite"><pre>docker <span class="nb">exec</span> -it zenroom-tp zenroom-tx --help
+</pre></div>
+
+
+<p>This will show you all the commands available from the zenroom-tx cli interface, which takes a Zencode script from stdin and sends its results into a transaction.</p>
+<h3 id="keygen">keygen</h3>
+<p>To send a transaction first generate a keypair using the <code>keygen</code> command</p>
+<div class="codehilite"><pre><span class="n">docker</span> <span class="n">exec</span> <span class="o">-</span><span class="n">it</span> <span class="n">zenroom</span><span class="o">-</span><span class="n">tp</span> <span class="n">zenroom</span><span class="o">-</span><span class="n">tx</span> <span class="n">keygen</span> <span class="n">FILENAME</span>
+</pre></div>
+
+
+<h3 id="transaction">transaction</h3>
+<div class="codehilite"><pre>docker <span class="nb">exec</span> -it zenroom-tp zenroom-tx transaction --help
+</pre></div>
+
+
+<h2 id="configuration">Configuration</h2>
+<p>The only environmental configuration accepted is is <code>ZTP_VALIDATOR_ENDPOINT</code>.</p>
+<h2 id="acknowledgements">Acknowledgements</h2>
+<p>Copyright (C) 2019 by <a href="https://www.dyne.org">Dyne.org</a> foundation, Amsterdam</p>
+<p>Designed, written and maintained by Puria Nafisi Azizi.</p>
+<p>Documentation contributed by Denis Roio.</p>
+<h2 id="license">License</h2>
+<div class="codehilite"><pre><span class="n">Zentooth</span> <span class="n">is</span> <span class="n">Copyright</span> <span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="mi">2019</span> <span class="n">by</span> <span class="n">the</span> <span class="n">Dyne</span><span class="p">.</span><span class="n">org</span> <span class="n">foundation</span>
+
+<span class="n">This</span> <span class="n">program</span> <span class="n">is</span> <span class="n">free</span> <span class="n">software</span><span class="o">:</span> <span class="n">you</span> <span class="n">can</span> <span class="n">redistribute</span> <span class="n">it</span> <span class="n">and</span><span class="o">/</span><span class="n">or</span> <span class="n">modify</span>
+<span class="n">it</span> <span class="n">under</span> <span class="n">the</span> <span class="n">terms</span> <span class="n">of</span> <span class="n">the</span> <span class="n">GNU</span> <span class="n">Affero</span> <span class="n">General</span> <span class="n">Public</span> <span class="n">License</span> <span class="n">as</span>
+<span class="n">published</span> <span class="n">by</span> <span class="n">the</span> <span class="n">Free</span> <span class="n">Software</span> <span class="n">Foundation</span><span class="p">,</span> <span class="n">either</span> <span class="n">version</span> <span class="mi">3</span> <span class="n">of</span> <span class="n">the</span>
+<span class="n">License</span><span class="p">,</span> <span class="n">or</span> <span class="p">(</span><span class="n">at</span> <span class="n">your</span> <span class="n">option</span><span class="p">)</span> <span class="n">any</span> <span class="n">later</span> <span class="n">version</span><span class="p">.</span>
+
+<span class="n">This</span> <span class="n">program</span> <span class="n">is</span> <span class="n">distributed</span> <span class="n">in</span> <span class="n">the</span> <span class="n">hope</span> <span class="n">that</span> <span class="n">it</span> <span class="n">will</span> <span class="n">be</span> <span class="n">useful</span><span class="p">,</span>
+<span class="n">but</span> <span class="n">WITHOUT</span> <span class="n">ANY</span> <span class="n">WARRANTY</span><span class="p">;</span> <span class="n">without</span> <span class="n">even</span> <span class="n">the</span> <span class="n">implied</span> <span class="n">warranty</span> <span class="n">of</span>
+<span class="n">MERCHANTABILITY</span> <span class="n">or</span> <span class="n">FITNESS</span> <span class="n">FOR</span> <span class="n">A</span> <span class="n">PARTICULAR</span> <span class="n">PURPOSE</span><span class="p">.</span>  <span class="n">See</span> <span class="n">the</span>
+<span class="n">GNU</span> <span class="n">Affero</span> <span class="n">General</span> <span class="n">Public</span> <span class="n">License</span> <span class="k">for</span> <span class="n">more</span> <span class="n">details</span><span class="p">.</span>
+
+<span class="n">You</span> <span class="n">should</span> <span class="n">have</span> <span class="n">received</span> <span class="n">a</span> <span class="n">copy</span> <span class="n">of</span> <span class="n">the</span> <span class="n">GNU</span> <span class="n">Affero</span> <span class="n">General</span> <span class="n">Public</span> <span class="n">License</span>
+<span class="n">along</span> <span class="n">with</span> <span class="n">this</span> <span class="n">program</span><span class="p">.</span>  <span class="n">If</span> <span class="n">not</span><span class="p">,</span> <span class="n">see</span> <span class="o">&lt;</span><span class="n">http</span><span class="o">:</span><span class="c1">//www.gnu.org/licenses/&gt;.</span>
+</pre></div> 
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+		<footer class="footer">
+	<div class="content has-text-centered">
+		<p>	<strong>Zentooth</strong> is Copyright (C) 2019 by the <a href="https://dyne.org">Dyne.org foundation</a>. The source code is licensed <a href="https://www.gnu.org/licenses/agpl-3.0.en.html">AGPLv3</a>. </p>
+		<div class="columns is-gapless">
+			<div class="column is-one-fifth">
+				<img src="assets/img/eu-flag.png"></div>
+			<p class="column is-three-quarters">
+			This project received funding from the European Union’s
+			Horizon 2020 research and innovation programme under grant
+			agreement nr. 732546 (DECODE).</p>
+		</div>
+	</div>
+</footer>
+		
+		 <!-- Start of Async Drift Code -->
+<script>
+ "use strict";
+
+ !function() {
+	 var t = window.driftt = window.drift = window.driftt || [];
+	 if (!t.init) {
+		 if (t.invoked) return void (window.console && console.error &&
+									 console.error("Drift snippet included twice."));
+		 t.invoked = !0, t.methods = [ "identify", "config", "track", "reset",
+									   "debug", "show", "ping", "page", "hide", "off", "on" ],
+							   t.factory = function(e) {
+								   return function() {
+									   var n = Array.prototype.slice.call(arguments);
+									   return n.unshift(e), t.push(n), t;
+								   };
+							   }, t.methods.forEach(function(e) {
+								   t[e] = t.factory(e);
+							   }), t.load = function(t) {
+								   var e = 3e5, n = Math.ceil(new Date() / e) * e, o =
+									   document.createElement("script");
+								   o.type = "text/javascript", o.async = !0, o.crossorigin = "anonymous",
+									   o.src = "https://js.driftt.com/include/" + n + "/" + t + ".js";
+								   var i = document.getElementsByTagName("script")[0];
+								   i.parentNode.insertBefore(o, i);
+							   };
+	 }
+ }();
+ drift.SNIPPET_VERSION = '0.3.1';
+ drift.load('s64nd7w43g53');
+</script> 
+	</body>
+</html>
