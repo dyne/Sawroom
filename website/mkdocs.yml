@@ -1,5 +1,5 @@
 site_name: Sawroom
-site_url: sawroom.dyne.org
+site_url: https://sawroom.dyne.org
 repo_url: https://github.com/decodeproject/sawroom
 site_author: Puria
 site_description: Zenroom Transaction Processor for Hyperledger Sawtooth capable to process smart contracts written in human language
