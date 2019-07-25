@@ -1,16 +1,16 @@
 # Blockchain smart-contracts in human language
 
-Zentooth integrates the [Zenroom VM](https://zenroom.dyne.org) to be used as a transaction processor in the [Sawtooth](https://sawtooth.hyperledger.org/) blockchain distributed by the Linux Foundation's [Hyperledger](https://www.hyperledger.org/) consortium.
+Sawroom integrates the [Zenroom VM](https://zenroom.dyne.org) to be used as a transaction processor in the [Sawtooth](https://sawtooth.hyperledger.org/) blockchain distributed by the Linux Foundation's [Hyperledger](https://www.hyperledger.org/) consortium.
 
-To facilitate the creation of transaction families based on Zenroom and the [Zencode human-friendly language for smart-contracts](https://decodeproject.eu/blog/smart-contracts-english-speaker), the Zentooth TP uses the [Sawtooth SDK](https://sawtooth.hyperledger.org/docs/core/releases/latest/sdks.html) in Python and the [zenroom-py](https://github.com/DECODEproject/zenroom-py) bindings.
+To facilitate the creation of transaction families based on Zenroom and the [Zencode human-friendly language for smart-contracts](https://decodeproject.eu/blog/smart-contracts-english-speaker), the Sawroom TP uses the [Sawtooth SDK](https://sawtooth.hyperledger.org/docs/core/releases/latest/sdks.html) in Python and the [zenroom-py](https://github.com/DECODEproject/zenroom-py) bindings.
 
 ## Quick start
 
-To try the Zentooth setup with a running Sawtooth is best to use the docker-compose inside docker-dyne-software repository:
+To try the Sawroom setup with a running Sawtooth is best to use the docker-compose inside docker-dyne-software repository:
 
 ```
 git clone https://github.com/dyne/docker-dyne-software
-cd zentooth
+cd sawroom
 docker-compose up --build
 ```
 
@@ -51,7 +51,7 @@ Documentation contributed by Denis Roio.
 
 ## License
 
-    Zentooth is Copyright (c) 2019 by the Dyne.org foundation
+    Sawroom is Copyright (c) 2019 by the Dyne.org foundation
     
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Affero General Public License as
