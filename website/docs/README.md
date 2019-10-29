@@ -14,25 +14,12 @@ cd sawroom
 docker-compose up --build
 ```
 
-Once all daemons are running, to run a transaction see:
+Once all daemons are running, open the petition API at http://localhost:9009 (or substitute `localhost` with the IP of the machine running sawroom)
+
+To try the command-line client use:
 
 ```bash
-docker exec -it zenroom-tp zenroom-tx --help
-```
-
-This will show you all the commands available from the zenroom-tx cli interface, which takes a Zencode script from stdin and sends its results into a transaction.
-
-### keygen
-
-To send a transaction first generate a keypair using the `keygen` command
-```
-docker exec -it zenroom-tp zenroom-tx keygen FILENAME
-```
-
-### transaction
-
-```bash
-docker exec -it zenroom-tp zenroom-tx transaction --help
+docker exec -it petition-tp petition --help
 ```
 
 
