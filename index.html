@@ -107,20 +107,6 @@
         <li>
 	<a href="#quick-start">Quick start</a>
 	
-    <ul>
-      
-        <li>
-	<a href="#keygen">keygen</a>
-	
-</li>
-      
-        <li>
-	<a href="#transaction">transaction</a>
-	
-</li>
-      
-    </ul>
-  
 </li>
       
         <li>
@@ -159,20 +145,9 @@
 </pre></div>
 
 
-<p>Once all daemons are running, to run a transaction see:</p>
-<div class="codehilite"><pre>docker <span class="nb">exec</span> -it zenroom-tp zenroom-tx --help
-</pre></div>
-
-
-<p>This will show you all the commands available from the zenroom-tx cli interface, which takes a Zencode script from stdin and sends its results into a transaction.</p>
-<h3 id="keygen">keygen</h3>
-<p>To send a transaction first generate a keypair using the <code>keygen</code> command</p>
-<div class="codehilite"><pre><span class="n">docker</span> <span class="n">exec</span> <span class="o">-</span><span class="n">it</span> <span class="n">zenroom</span><span class="o">-</span><span class="n">tp</span> <span class="n">zenroom</span><span class="o">-</span><span class="n">tx</span> <span class="n">keygen</span> <span class="n">FILENAME</span>
-</pre></div>
-
-
-<h3 id="transaction">transaction</h3>
-<div class="codehilite"><pre>docker <span class="nb">exec</span> -it zenroom-tp zenroom-tx transaction --help
+<p>Once all daemons are running, open the petition API at http://localhost:9009 (or substitute <code>localhost</code> with the IP of the machine running sawroom)</p>
+<p>To try the command-line client use:</p>
+<div class="codehilite"><pre>docker <span class="nb">exec</span> -it petition-tp petition --help
 </pre></div>
 
 
