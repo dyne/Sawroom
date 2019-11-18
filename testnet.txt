@@ -1,5 +1,17 @@
-DIR:ubxrvwz7h7vsusqr74gcprdctkti4bvayn6k32grtrxhdqfdyqdcjqqd.onion
-DIR:3pm6cyk7d72jh2qukz57dephigk3junn3i7or5cigr3xl2aoqudbywid.onion
+# rishi
+DIR:lmcgmn7ox3bsy5askuyc572ei7lv45lzqwfcmvp6t2gs7aiu6oqmetid.onion
+SAW:02761341ccc944b99fff3d20623f263f4f1751ba7abbca753eb0715a70706bbc45
+
+# elitedesk
 DIR:avhsb76leee5c4b3p7a4zva2eroebh3gv4tyfumyfyiveianener5uad.onion
+SAW:02d1429dc03420f5ce7682c12421b62ab724fe74a3441b797f1f13c6b39f3a7b16
+
+# sovrin
+DIR:2xya3lijgiudcgor73mbu2lq7icsttee5wuowc64eabezgvaldibobqd.onion
+SAW:0273905ba7c91fdd33f80922506e86183a2ed62c8ae1fd612ac752edc90002fbd7
+
+# old test
+# DIR:ubxrvwz7h7vsusqr74gcprdctkti4bvayn6k32grtrxhdqfdyqdcjqqd.onion
+# DIR:3pm6cyk7d72jh2qukz57dephigk3junn3i7or5cigr3xl2aoqudbywid.onion
 
 
