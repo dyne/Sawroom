@@ -1,6 +1,6 @@
 ##############################################################################
 #
-#    Zenroom TP, Transaction processor for zenroom over sawtooth
+#    Petition TP, Transaction processor for Decode Petition over sawtooth
 #    Copyright (c) 2019-TODAY Dyne.org <http://dyne.org>
 #
 #    This program is free software: you can redistribute it and/or modify

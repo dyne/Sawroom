@@ -1,0 +1,152 @@
+# Zenroom TP for Sawtooth experimental environment
+
+version: '3'
+
+services:
+
+  petition-tp:
+    build:
+      context: .
+      dockerfile: Dockerfile.petition-tp-python
+      args:
+        - http_proxy
+        - https_proxy
+        - no_proxy
+    tty: true
+    stdin_open: true
+    image: dyne/petition-tp-python:latest
+    container_name: petition-tp
+    depends_on:
+      - validator
+    environment:
+      - SAWTOOTH_VALIDATOR_ENDPOINT=tcp://validator:4004
+      - SAWTOOTH_REST_ENDPOINT=http://rest-api:8090
+    command: |
+      bash -c "petition-tp-python"
+
+
+  petition-api:
+    build:
+      context: .
+      dockerfile: Dockerfile.petition-tp-python
+      args:
+        - http_proxy
+        - https_proxy
+        - no_proxy
+    tty: true
+    stdin_open: true
+    image: dyne/petition-tp-python:latest
+    container_name: petition-api
+    depends_on:
+      - petition-tp
+      - validator
+    ports:
+      - '9009:9009'
+    environment:
+      - SAWTOOTH_VALIDATOR_ENDPOINT=tcp://validator:4004
+      - SAWTOOTH_REST_ENDPOINT=http://rest-api:8090
+      - JWT_ALGORITHM=HS256
+      - JWT_TOKEN_SUBJECT=access
+      - JWT_ACCESS_TOKEN_EXPIRE_MINUTES=30
+      - JWT_USERNAME=demo
+      - JWT_PASSWORD=demo
+      - JWT_RANDOM_SECRET=0xBADC0FF3
+    command: |
+      ./petition-api.sh
+
+  # petition-web:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile.petition
+  #   image: dyne/sawroom:petition
+  #   container_name: petition-web
+  #   depends_on:
+  #     - zenroom-tp
+  #     - rest-api
+  #   environment:
+  #     - SAWTOOTH_SERVER=rest-api
+  #     - SAWTOOTH_PORT=8090
+  #   ports:
+  #     - '3000:3000'
+  #   command: |
+  #     npm run dev
+
+  # explorer-web:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile.explorer
+  #   image: dyne/sawroom:explorer
+  #   container_name: explorer-web
+  #   depends_on:
+  #     - rest-api
+  #   ports:
+  #     - '9000:9000'
+  #   environment:
+  #     - SAWTOOTH_API="http://rest-api:8090/blocks"
+  #   command: |
+  #     yarn start
+
+  block-info-tp:
+    image: hyperledger/sawtooth-block-info-tp:latest
+    container_name: block-info-tp
+    depends_on:
+      - validator
+    command: block-info-tp -v --connect tcp://validator:4004
+
+  settings-tp:
+    image: hyperledger/sawtooth-settings-tp:latest
+    container_name: settings-tp
+    depends_on:
+      - validator
+    command: settings-tp -v --connect tcp://validator:4004
+
+  rest-api:
+    image: hyperledger/sawtooth-rest-api:latest
+    container_name: rest-api
+    ports:
+      - '8090:8090'
+    depends_on:
+      - validator
+    entrypoint: |
+      sawtooth-rest-api -v
+        --connect tcp://validator:4004
+        --bind rest-api:8090
+
+  devmode-rust:
+    image: hyperledger/sawtooth-devmode-engine-rust:latest
+    container_name: devmode-engine-rust
+    environment:
+      - RUST_BACKTRACE=1
+    depends_on:
+      - validator
+    command: devmode-engine-rust -v --connect tcp://validator:5050
+
+  validator:
+    image: hyperledger/sawtooth-validator:latest
+    container_name: sawtooth-validator
+    ports:
+      - '4004:4004/tcp'
+      - 8800
+    command: |
+      bash -c "if [ ! -f /etc/keys/validator.priv ]; then
+          sawadm keygen &&
+          sawset genesis \
+          -k /etc/sawtooth/keys/validator.priv \
+          -o config-genesis.batch &&
+        sawset proposal create \
+          -k /etc/sawtooth/keys/validator.priv \
+          sawtooth.consensus.algorithm.name=Devmode \
+          sawtooth.consensus.algorithm.version=0.1 \
+          sawtooth.validator.batch_injectors=block_info \
+          -o config.batch &&
+        sawadm genesis config-genesis.batch config.batch
+        fi;
+        sawtooth-validator -vvvv \
+            --endpoint tcp://validator:8800 \
+            --bind component:tcp://eth0:4004 \
+            --bind network:tcp://eth0:8800 \
+            --bind consensus:tcp://eth0:5050
+      "
+
+volumes:
+  sawtooth:
