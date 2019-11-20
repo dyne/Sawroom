@@ -1,0 +1,29 @@
+#!/usr/bin/env zsh
+
+blend_name="sawroom"
+blend_vers="1.0"
+
+release="beowulf"
+size="4096"
+
+if [ -n "$armsdk_version" ]; then
+	image_name="${blend_name}-${blend_vers}-${arch}-${device_name}-$(date '+%Y%m%d')"
+elif [ -n "$vmsdk_version" ]; then
+	image_name="${blend_name}-${blend_vers}-${arch}-$(date '+%Y%m%d')"
+	image_name="${blend_name}-${blend_vers}-${arch}-virtual-$(date '+%Y%m%d')"
+fi
+
+blend_preinst() {
+	fn blend_preinst
+	req=()
+	ckreq || return 1
+
+	return
+}
+
+blend_postinst() {
+	fn blend_postinst
+	req=(strapdir)
+	ckreq || return 1
+
+	cat <<EOF | sudo tee ${strapdir}/blend-postinst

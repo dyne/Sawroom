@@ -1,0 +1,6 @@
+EOF
+
+	chroot-script -d blend-postinst || zerr
+
+	return
+}
