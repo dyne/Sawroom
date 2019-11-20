@@ -1,0 +1,12 @@
+FROM node:lts-alpine
+
+RUN apk add git bash python gcc g++ make
+
+RUN git clone https://github.com/DECODEproject/temet-nosce /app
+WORKDIR /app
+RUN sed -i 's/127.0.0.1/0.0.0.0/' package.json
+RUN npm i -g gatsby-cli && yarn
+CMD yarn start
+
+
+

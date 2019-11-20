@@ -1,0 +1,36 @@
+#!/usr/bin/env zsh
+
+K=/etc/sawtooth/keys
+L=/var/log/tor
+local dam
+local pksaw
+local sksaw
+dam=""
+pksaw=""
+if [[ -r $L/dam-client.log ]]; then
+	dam=$(awk '
+BEGIN { dam="" }
+/Our hostname is:/ { dam=$6 }
+END { print dam }' $L/dam-client.log)
+fi
+
+if [[ -r $K/validator.pub ]]; then
+	pksaw=`cat $K/validator.pub`
+else
+	if [[ -r $K/validator.priv ]]; then
+		sksaw=`cat $K/validator.priv`
+		# use zenroom to calculate public key
+		cat <<EOF | zenroom > $K/validator.pub
+ec = ECDH.new('secp256k1')
+ec:private(O.from_hex('$sksaw'))
+x,y = ec:public_xy()
+print("02"..x:hex()) -- montgomery notation prefix
+EOF
+		pksaw=`cat $K/validator.pub`
+	else
+		echo "Sawtooth keys not found"
+	fi
+fi
+
+[[ "$dam" != "" ]] && echo "Dam onion address: $dam"
+[[ "$pksaw" != "" ]] &&	echo "Sawtooth verifier: $pksaw"

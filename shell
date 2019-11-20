@@ -1,0 +1,10 @@
+#!/bin/sh
+
+c=$(docker container ls | awk '/dyne\/sawroom/ { print $1 }')
+if [ "$c" = "" ]; then return 1; fi
+if [ "$1" = "" ]; then
+	docker exec -it $c zsh
+else
+	docker exec -it $c $*
+fi
+

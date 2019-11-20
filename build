@@ -1,0 +1,3 @@
+#!/bin/sh
+
+docker build -t dyne/sawroom:latest -f Dockerfile.sawroom . $@

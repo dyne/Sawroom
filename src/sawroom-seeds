@@ -1,0 +1,24 @@
+#!/usr/bin/env zsh
+
+# Script to parse an authorative list of peers formatted for sawroom
+# and tor-dam and fill a json array inside scriptsa and configurations
+# by Jaromil (2019), Public Domain
+
+# arguments: SAW or DIR
+
+pfx=${1:-"SAW"}
+url=https://sawroom.dyne.org/testnet.txt
+torport=7700 # configured in dam-client
+seeds=(`curl -s $url | grep "^${pfx}" | cut -d: -f2`)
+out="["
+if [[ "$pfx" == "SAW" ]]; then
+	for i in $seeds; do
+		out="${out}\"${i}\","
+	done
+elif [[ "$pfx" == "DIR" ]]; then
+	for i in $seeds; do
+		out="${out}\"tcp://${i}:7700\","
+	done
+fi
+out[${#out}]="]"
+print $out

@@ -1,0 +1,35 @@
+#!/usr/bin/env zsh
+
+R=/var/lib/sawtooth
+K=/etc/sawtooth/keys
+command -v sawset > /dev/null || {
+	print "Sawtooth not installed"
+	return 1
+}
+
+command -v sawroom-seeds > /dev/null || {
+	print "Sawroom not installed"
+	return 1
+}
+
+[ -r $R/genesis.batch ] && {
+	print "Cannot overwrite $R/genesis.batch"
+	return 1
+}
+
+print "GENESIS"
+print "sawtooth.consensus.algorithm.name=pbft"
+print "sawtooth.consensus.algorithm.version=1.0"
+print "sawtooth.consensus.pbft.members=`sawroom-seeds`"
+
+# sawset genesis
+sawset genesis -k $K/validator.priv -o $R/config-genesis.batch
+sawset proposal create \
+	   -k $K/validator.priv \
+	   sawtooth.consensus.algorithm.name=pbft \
+	   sawtooth.consensus.algorithm.version=1.0 \
+	   sawtooth.consensus.pbft.members=`sawroom-seeds SAW` \
+	   sawtooth.validator.batch_injectors=block_info -o $R/config.batch
+# output in /var/lib/sawtooth/genesis.batch
+sawadm genesis $R/config-genesis.batch $R/config.batch
+

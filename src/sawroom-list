@@ -1,0 +1,37 @@
+#!/usr/bin/env zsh
+#
+# list nodes seen in tor-dam
+# if a number is provided as argument, list node configuration contents
+
+local c=0
+[[ "$1" == "" ]] && { 
+	print "List all nodes known by tor-dam (number argument print contents)"
+	for i in $(print "keys *" | redis-cli); do
+		c=$(( $c + 1 ))
+		print "${c}. $i"
+	done
+}
+
+num="$1"
+for i in $(print "keys *" | redis-cli); do
+	c=$(( $c + 1 ))
+	if [[ $c == $num ]]; then
+		print "= $i"
+		local l=0
+		local prev=""
+		for e in $(print "hgetall $i" | redis-cli); do
+			[[ $l == 0 ]] && {
+				print -n "$e: "
+				prev="$e"
+			}
+			[[ $l == 1 ]] && {
+				if [[ "$prev" =~ "seen" ]]; then # format date
+					print $(date -d @"$e")
+				else
+					print "$e"
+				fi
+			}
+			l=$(( ( $l + 1 ) % 2 ))
+		done
+	fi
+done
