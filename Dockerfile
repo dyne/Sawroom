@@ -1,5 +1,6 @@
 FROM dyne/devuan:beowulf
 ENV debian buster
+ENV osarch amd64
 
 LABEL maintainer="Denis Roio <jaromil@dyne.org>" \
 	  homepage="https://sawroom.dyne.org"
@@ -17,15 +18,19 @@ RUN apt-get update -y -q \
     python3 \
     python3-pip \
     python3-stdeb \
-	python3-dev \
+    python3-dev \
     python3-protobuf \
     python3-cbor \
     python3-colorlog \
     python3-toml \
     python3-yaml \
     python3-zmq \
+    python3-stem \
+    protobuf-compiler \
+    protobuf-compiler-grpc \
+    libffi-dev \
     supervisor daemontools net-tools \
-	zsh curl unzip \
+    zsh wget curl unzip \
     && apt-get clean
 
 RUN pip3 install grpcio-tools wheel
@@ -45,12 +50,6 @@ ENV PATH=$PATH:/project/sawtooth-core/bin
 
 WORKDIR /project
 
-
-RUN curl -OLsS https://github.com/google/protobuf/releases/download/v3.5.1/protoc-3.5.1-linux-x86_64.zip \
-	&& unzip protoc-3.5.1-linux-x86_64.zip -d protoc3 \
-	&& cp -v protoc3/bin/protoc /usr/local/bin \
-	&& rm -rf protoc-3.5.1-linux-x86_64.zip protoc3
-
 # Sawtooth SDK
 # RUN git clone https://github.com/hyperledger/sawtooth-sdk-python.git /project/sawtooth-sdk-python
 RUN wget https://github.com/hyperledger/sawtooth-sdk-python/archive/v1.2.2.tar.gz \
@@ -65,7 +64,7 @@ RUN git clone https://github.com/DECODEproject/sawroom /project/sawroom \
 	&& pip3 install -e /project/sawroom/src/petition-tp
 
 # install zenroom's cli binary and repo for tests
-RUN wget https://sdk.dyne.org:4443/view/zenroom/job/zenroom-static-amd64/lastSuccessfulBuild/artifact/src/zenroom -O /usr/local/bin/zenroom && chmod +x /usr/local/bin/zenroom \
+RUN wget https://sdk.dyne.org:4443/view/zenroom/job/zenroom-static-$osarch/lastSuccessfulBuild/artifact/src/zenroom -O /usr/local/bin/zenroom && chmod +x /usr/local/bin/zenroom \
 	&& git clone https://github.com/decodeproject/zenroom
 
 # ## helper personas for the test units
@@ -121,11 +120,6 @@ RUN wget https://github.com/hyperledger/sawtooth-pbft/archive/v1.0.0.tar.gz \
     && cargo build
 RUN cp /project/sawtooth-pbft/target/debug/pbft-engine /usr/local/bin
 
-ENV DYNESDK=https://sdk.dyne.org:4443/job \
-	NETDATA_VERSION=1.10.0 \
-	STEM_VERSION=1.6.0 \
-	STEM_GIT=https://git.torproject.org/stem.git
-
 # Tor repository
 ADD https://raw.githubusercontent.com/DECODEproject/decode-os/master/docker-sdk/tor.pub.asc tor.pub.asc
 RUN apt-key add tor.pub.asc
@@ -156,7 +150,6 @@ WORKDIR /project
 # petition transaction middleware
 RUN pip3 install 'fastapi[all]' && pip3 install hypercorn
 
-
 COPY src/supervisord.conf /etc/supervisor/supervisord.conf
 COPY src/sawroom-validator /usr/local/bin/sawroom-validator
 COPY src/sawroom-start     /usr/local/bin/sawroom-start
@@ -165,7 +158,8 @@ COPY src/sawroom-address   /usr/local/bin/sawroom-address
 COPY src/sawroom-seeds     /usr/local/bin/sawroom-seeds
 COPY src/sawroom-genesis   /usr/local/bin/sawroom-genesis
 
+RUN chmod 775 /usr/local/bin/sawroom-*
+
 RUN    echo "127.0.0.1 validator" >> /etc/hosts \
 	&& echo "127.0.0.1 rest-api" >> /etc/hosts
 CMD /etc/init.d/supervisor start
-
