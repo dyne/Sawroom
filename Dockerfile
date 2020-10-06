@@ -152,13 +152,13 @@ WORKDIR /project
 RUN pip3 install 'fastapi[all]' && pip3 install hypercorn
 
 
-COPY supervisord.conf /etc/supervisor/supervisord.conf
-COPY sawroom-validator /usr/local/bin/sawroom-validator
-COPY sawroom-start     /usr/local/bin/sawroom-start
-COPY sawroom-list      /usr/local/bin/sawroom-list
-COPY sawroom-address   /usr/local/bin/sawroom-address
-COPY sawroom-seeds     /usr/local/bin/sawroom-seeds
-COPY sawroom-genesis   /usr/local/bin/sawroom-genesis
+COPY src/supervisord.conf /etc/supervisor/supervisord.conf
+COPY src/sawroom-validator /usr/local/bin/sawroom-validator
+COPY src/sawroom-start     /usr/local/bin/sawroom-start
+COPY src/sawroom-list      /usr/local/bin/sawroom-list
+COPY src/sawroom-address   /usr/local/bin/sawroom-address
+COPY src/sawroom-seeds     /usr/local/bin/sawroom-seeds
+COPY src/sawroom-genesis   /usr/local/bin/sawroom-genesis
 
 RUN    echo "127.0.0.1 validator" >> /etc/hosts \
 	&& echo "127.0.0.1 rest-api" >> /etc/hosts

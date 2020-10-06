@@ -21,9 +21,8 @@ else
 		sksaw=`cat $K/validator.priv`
 		# use zenroom to calculate public key
 		cat <<EOF | zenroom > $K/validator.pub
-ec = ECDH.new('secp256k1')
-ec:private(O.from_hex('$sksaw'))
-x,y = ec:public_xy()
+ec = ECDH.pubgen(O.from_hex('$sksaw'))
+x,y = ECDH.public_xy(ec)
 print("02"..x:hex()) -- montgomery notation prefix
 EOF
 		pksaw=`cat $K/validator.pub`
