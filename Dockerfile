@@ -64,22 +64,7 @@ RUN git clone https://github.com/DECODEproject/petition-tp-python /project/petit
 	&& pip3 install -e /project/petition-tp-python/src
 
 # install zenroom's cli binary and repo for tests
-RUN wget https://files.dyne.org/zenroom/nightly/zenroom-linux-amd64 -O /usr/local/bin/zenroom && chmod +x /usr/local/bin/zenroom \
-	&& git clone https://github.com/decodeproject/zenroom
-
-# ## helper personas for the test units
-# # .zen is code
-# # .json is data
-# # here alice and bob are two rounds of the coconut flow fully generated
-# RUN cd /project/zenroom/test/zencode_coconut \
-# 	&& cp *.zen /project/ \
-# 	&& ./run_coconut_example.sh zenroom && ./run_petition_example.sh zenroom \
-# 	&& mkdir -p /project/alice/ && cp -v *.json /project/alice/ \
-# 	&& ./run_coconut_example.sh zenroom && ./run_petition_example.sh zenroom \
-# 	&& mkdir -p /project/bob/ && cp -v *.json /project/bob/
-# # sha256 sums are calculated to mark the difference by the two rounds.
-# RUN cat alice/* | sha256sum - > alice.sha256 \
-# 	&& cat bob/* | sha256sum - > bob.sha256
+RUN wget https://files.dyne.org/zenroom/nightly/zenroom-linux-amd64 -O /usr/local/bin/zenroom && chmod +x /usr/local/bin/zenroom
 
 ENV PATH=$PATH:/project/petition-tp-python/bin
 
@@ -127,7 +112,6 @@ RUN wget https://github.com/hyperledger/sawtooth-pbft/archive/v1.0.3.tar.gz \
 	&& cd /project/sawtooth-pbft \
     && cargo build
 RUN cp /project/sawtooth-pbft/target/debug/pbft-engine /usr/local/bin
-RUN apt-get install -y -q npm
 
 
 ENV DYNESDK=https://sdk.dyne.org:4443/job \
