@@ -1,0 +1,9 @@
+#!/usr/bin/env zsh
+
+D=/var/lib/sawtooth
+
+# TODO: add more checks
+# -----BEGIN SAWROOM PUBLIC GENESIS BLOCK-----
+
+grep -v '^-----' | base64 -d | bunzip2 | tar -C / -xvf -
+
