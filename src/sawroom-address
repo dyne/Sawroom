@@ -7,6 +7,8 @@ local pksaw
 local sksaw
 dam=""
 pksaw=""
+
+# see also /var/lib/tor/.dam/hostname
 if [[ -r $L/dam-client.log ]]; then
 	dam=$(awk '
 BEGIN { dam="" }

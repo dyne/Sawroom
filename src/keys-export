@@ -1,0 +1,27 @@
+#!/usr/bin/env zsh
+
+D=/var/lib/tor/.dam
+[[ -r $D/dam-private.key ]] && {
+	pushd $D
+	echo
+	echo "-----BEGIN TOR-DAM KEYS BLOCK-----"
+	echo
+	tar -cf - dam-private.key dam-private.seed hostname | bzip2 -9 | base64
+	echo
+	echo "-----END TOR-DAM KEYS BLOCK-----"
+	echo
+	popd
+}
+
+S=/etc/sawtooth/keys
+[[ -r $S/validator.priv ]] && {
+	pushd $S
+	echo
+	echo "-----BEGIN SAWTOOTH KEYS BLOCK-----"
+	echo
+	tar -cf - validator.priv validator.pub | bzip2 -9 | base64
+	echo
+	echo "-----END SAWTOOTH KEYS BLOCK-----"
+	echo
+	popd
+}

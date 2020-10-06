@@ -1,0 +1,10 @@
+#!/usr/bin/env zsh
+
+D=/var/lib/tor
+[[ -r $D/.dam/dam-private.key ]] || HOME=$D dam-client -gen
+
+S=/etc/sawtooth/keys
+[[ -r $S/validator.priv ]] || sawadm keygen
+
+sawroom-address
+
