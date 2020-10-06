@@ -1,0 +1,7 @@
+#!/bin/sh
+
+if [ "$1" != "" ]; then
+   sed -e "s/1000/$1/" -i /etc/passwd
+fi
+/etc/init.d/supervisor start
+

@@ -1,7 +1,3 @@
 #!/bin/sh
 
-if [ "$1" = "release" ]; then
-	docker build -t dyne/sawroom:`cat VERSION` -f Dockerfile . $@
-else
-	docker build -t dyne/sawroom:latest -f Dockerfile . $@
-fi
+docker build -t dyne/sawroom:latest -f Dockerfile . $@
