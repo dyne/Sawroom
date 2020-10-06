@@ -158,7 +158,9 @@ COPY src/sawroom-start     /usr/local/bin/sawroom-start
 COPY src/sawroom-list      /usr/local/bin/sawroom-list
 COPY src/sawroom-address   /usr/local/bin/sawroom-address
 COPY src/sawroom-seeds     /usr/local/bin/sawroom-seeds
-COPY src/sawroom-genesis   /usr/local/bin/sawroom-genesis
+COPY src/genesis-create    /usr/local/bin/genesis-create
+COPY src/genesis-import    /usr/local/bin/genesis-import
+COPY src/genesis-export    /usr/local/bin/genesis-export
 
 RUN    echo "127.0.0.1 validator" >> /etc/hosts \
 	&& echo "127.0.0.1 rest-api" >> /etc/hosts
