@@ -17,6 +17,23 @@ t="$src"/log/tor/tor.log && touch "$t"
 
 # --mount type=bind,source="$src"/keys/tor,destination=/etc/tor \
 
+cat <<EOF
+ ___   ___      _____  ___   ___  __  __ 
+/ __| /_\ \    / / _ \/ _ \ / _ \|  \/  |
+\__ \/ _ \ \/\/ /|   / (_) | (_) | |\/| |
+|___/_/ \_\_/\_/ |_|_\\___/ \___/|_|  |_|
+
+Started full node, local consoles links:
+
+Service supervisor: https://127.0.0.1:9001
+
+Netdata monitor: http://127.0.0.1:19999
+
+Execute ./shell to step into the running container
+Hit Ctrl-C to stop
+
+EOF
+
 if [ "$1" = "" ]; then
 	docker run -it \
 		   --mount type=bind,source="$src"/data,destination=/var/lib/sawtooth \
