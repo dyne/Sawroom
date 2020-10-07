@@ -7,7 +7,7 @@ copyright: Copyright (C) 2019 by the <a href="https://dyne.org">Dyne.org foundat
 
 extra:
   links:
-    docker: https://hub.docker.com/r/decodeproject/sawroom
+    docker: https://hub.docker.com/r/dyne/sawroom
   drift_handle: s64nd7w43g53
   nav:
     subtitle: Zenroom Transaction Processor for Hyperledger Sawtooth
