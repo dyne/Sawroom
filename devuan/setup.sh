@@ -23,13 +23,11 @@ ssh $H chmod +x /etc/systemd/system/supervisord.service
 ssh $H systemctl enable supervisord
 
 # sawroom permissions
-chmod a+x /usr/local/bin/*
-mkdir -p /var/log/sawtooth /var/lib/sawroom /var/lib/sawtooth
-chown -R sawroom:sawroom /var/log/sawtooth
-chown -R sawroom:sawroom /var/lib/sawroom
-chown -R sawroom:sawroom /var/lib/sawtooth
-chown -R sawroom:sawroom /etc/sawtooth
-mkdir -p /var/run/tor /var/lib/tor /var/log/tor
-chown -R sawroom:sawroom /var/run/tor
-chown -R sawroom:sawroom /var/lib/tor
-chown -R sawroom:sawroom /var/log/tor
+ssh $H 'chmod a+x /usr/local/bin/*'
+ssh $H mkdir -p /var/log/sawtooth /var/lib/sawroom /var/lib/sawtooth
+ssh $H chown -R sawroom:sawroom /var/log/sawtooth /var/lib/sawroom /var/lib/sawtooth /etc/sawtooth
+ssh $H mkdir -p /var/run/tor /var/lib/tor /var/log/tor
+ssh $H chown -R sawroom:sawroom /var/run/tor /var/lib/tor /var/log/tor
+
+print "Installation completed, rebooting..."
+ssh $H init 6
