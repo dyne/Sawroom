@@ -1,4 +1,8 @@
-# Adam siluvian
-DIR:nyyznlvzluhw4rnv3ydv23dqfj342ejfdgnvtg2h5onz6jzmwic7wwad.onion
-SAW:0204075eda26768f4eed099939c4caf34b0d74471790f8c6e476be158900cae7e4
+# Sawroom testnet 1
+DIR:5rjeestsgmwlff2vyg3n4ho5kddnrjc5os5nyotepzlbet3uceyrwgqd.onion
+SAW:023f14bac0bfbc45a9c4eea21240206a6a9b2bc36e0a41e43999b9e2232c5e00aa
+
+# Sawroom testnet 2
+DIR:wt4gca6e65iniy6ilg6eoekvvbrpjcq6b3v22umo3ebw5zhes2j5zoad.onion
+SAW:032daa307b16b97c368ffbd033a5017e26f77699d5623016bbf071391320c2b8cd
 
