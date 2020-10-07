@@ -131,7 +131,7 @@ ENV DYNESDK=https://sdk.dyne.org:4443/job \
 ADD https://raw.githubusercontent.com/DECODEproject/decode-os/master/docker-sdk/tor.pub.asc tor.pub.asc
 RUN apt-key add tor.pub.asc
 RUN echo "deb https://deb.torproject.org/torproject.org $debian main" > /etc/apt/sources.list.d/tor.list
-RUN apt-get install -y -q golang redis-server redis-tools netdata tor nyx
+RUN apt-get install -y -q golang redis-server redis-tools tor nyx
 
 
 RUN useradd -ms /bin/zsh sawroom
