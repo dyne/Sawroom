@@ -23,6 +23,17 @@ print "sawtooth.consensus.algorithm.version=1.0"
 print
 print "Please input 4 valid sawroom verifiers:"
 # TODO: validity check if existing points on secp256k1 curve using zenroom
+# 	if [[ -r $K/validator.priv ]]; then
+# 		sksaw=`cat $K/validator.priv`
+# 		# use zenroom to calculate public key
+# 		cat <<EOF | zenroom > $K/validator.pub
+# ec = ECDH.pubgen(O.from_hex('$sksaw'))
+# x,y = ECDH.public_xy(ec)
+# print("02"..x:hex()) -- montgomery notation prefix
+# EOF
+# 		pksaw=`cat $K/validator.pub`
+# 	else
+
 read first
 read second
 read third

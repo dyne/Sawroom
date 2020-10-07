@@ -29,6 +29,7 @@ chown -R sawroom:sawroom /var/log/sawtooth
 chown -R sawroom:sawroom /var/lib/sawroom
 chown -R sawroom:sawroom /var/lib/sawtooth
 chown -R sawroom:sawroom /etc/sawtooth
-mkdir -p /var/run/tor /var/lib/tor
+mkdir -p /var/run/tor /var/lib/tor /var/log/tor
 chown -R sawroom:sawroom /var/run/tor
 chown -R sawroom:sawroom /var/lib/tor
+chown -R sawroom:sawroom /var/log/tor

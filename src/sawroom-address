@@ -1,36 +1,23 @@
 #!/usr/bin/env zsh
 
 K=/etc/sawtooth/keys
-L=/var/log/tor
+L=/var/lib/tor/.dam
 local dam
 local pksaw
-local sksaw
 dam=""
 pksaw=""
 
 # see also /var/lib/tor/.dam/hostname
-if [[ -r $L/dam-client.log ]]; then
-	dam=$(awk '
-BEGIN { dam="" }
-/Our hostname is:/ { dam=$6 }
-END { print dam }' $L/dam-client.log)
+if [[ -r $L/hostname ]]; then
+	dam=`cat $L/hostname`
+else
+	echo "Tor-Dam keys not found"
 fi
 
 if [[ -r $K/validator.pub ]]; then
 	pksaw=`cat $K/validator.pub`
 else
-	if [[ -r $K/validator.priv ]]; then
-		sksaw=`cat $K/validator.priv`
-		# use zenroom to calculate public key
-		cat <<EOF | zenroom > $K/validator.pub
-ec = ECDH.pubgen(O.from_hex('$sksaw'))
-x,y = ECDH.public_xy(ec)
-print("02"..x:hex()) -- montgomery notation prefix
-EOF
-		pksaw=`cat $K/validator.pub`
-	else
-		echo "Sawtooth keys not found"
-	fi
+	echo "Sawtooth keys not found"
 fi
 
 [[ "$dam" != "" ]] && echo "Dam onion address: $dam"
