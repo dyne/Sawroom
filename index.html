@@ -85,7 +85,7 @@
         
         
         
-        <li><span class="mdi mdi-docker"></span><a href="https://hub.docker.com/r/decodeproject/sawroom">Docker image</a></li>
+        <li><span class="mdi mdi-docker"></span><a href="https://hub.docker.com/r/dyne/sawroom">Docker image</a></li>
         
         
         
@@ -139,17 +139,15 @@
 <p>To facilitate the creation of transaction families based on Zenroom and the <a href="https://decodeproject.eu/blog/smart-contracts-english-speaker">Zencode human-friendly language for smart-contracts</a>, the Sawroom TP uses the <a href="https://sawtooth.hyperledger.org/docs/core/releases/latest/sdks.html">Sawtooth SDK</a> in Python and the <a href="https://github.com/DECODEproject/zenroom-py">zenroom-py</a> bindings.</p>
 <h2 id="quick-start">Quick start</h2>
 <p>To try the Sawroom setup with a running Sawtooth is best to use the docker-compose inside docker-dyne-software repository:</p>
-<div class="codehilite"><pre><span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="o">:</span><span class="c1">//github.com/dyne/docker-dyne-software</span>
-<span class="n">cd</span> <span class="n">sawroom</span>
-<span class="n">docker</span><span class="o">-</span><span class="n">compose</span> <span class="n">up</span> <span class="o">--</span><span class="n">build</span>
-</pre></div>
-
+<pre class="codehilite"><code>git clone https://github.com/dyne/docker-dyne-software
+cd sawroom
+docker-compose up --build
+</code></pre>
 
 <p>Once all daemons are running, open the petition API at http://localhost:9009 (or substitute <code>localhost</code> with the IP of the machine running sawroom)</p>
 <p>To try the command-line client use:</p>
-<div class="codehilite"><pre>docker <span class="nb">exec</span> -it petition-tp petition --help
-</pre></div>
-
+<pre class="bash codehilite"><code class="language-bash">docker exec -it petition-tp petition --help
+</code></pre>
 
 <h2 id="configuration">Configuration</h2>
 <p>The only environmental configuration accepted is is <code>ZTP_VALIDATOR_ENDPOINT</code>.</p>
@@ -158,21 +156,21 @@
 <p>Designed, written and maintained by Puria Nafisi Azizi.</p>
 <p>Documentation contributed by Denis Roio.</p>
 <h2 id="license">License</h2>
-<div class="codehilite"><pre><span class="n">Sawroom</span> <span class="n">is</span> <span class="n">Copyright</span> <span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="mi">2019</span> <span class="n">by</span> <span class="n">the</span> <span class="n">Dyne</span><span class="p">.</span><span class="n">org</span> <span class="n">foundation</span>
+<pre class="codehilite"><code>Sawroom is Copyright (c) 2019 by the Dyne.org foundation
 
-<span class="n">This</span> <span class="n">program</span> <span class="n">is</span> <span class="n">free</span> <span class="n">software</span><span class="o">:</span> <span class="n">you</span> <span class="n">can</span> <span class="n">redistribute</span> <span class="n">it</span> <span class="n">and</span><span class="o">/</span><span class="n">or</span> <span class="n">modify</span>
-<span class="n">it</span> <span class="n">under</span> <span class="n">the</span> <span class="n">terms</span> <span class="n">of</span> <span class="n">the</span> <span class="n">GNU</span> <span class="n">Affero</span> <span class="n">General</span> <span class="n">Public</span> <span class="n">License</span> <span class="n">as</span>
-<span class="n">published</span> <span class="n">by</span> <span class="n">the</span> <span class="n">Free</span> <span class="n">Software</span> <span class="n">Foundation</span><span class="p">,</span> <span class="n">either</span> <span class="n">version</span> <span class="mi">3</span> <span class="n">of</span> <span class="n">the</span>
-<span class="n">License</span><span class="p">,</span> <span class="n">or</span> <span class="p">(</span><span class="n">at</span> <span class="n">your</span> <span class="n">option</span><span class="p">)</span> <span class="n">any</span> <span class="n">later</span> <span class="n">version</span><span class="p">.</span>
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as
+published by the Free Software Foundation, either version 3 of the
+License, or (at your option) any later version.
 
-<span class="n">This</span> <span class="n">program</span> <span class="n">is</span> <span class="n">distributed</span> <span class="n">in</span> <span class="n">the</span> <span class="n">hope</span> <span class="n">that</span> <span class="n">it</span> <span class="n">will</span> <span class="n">be</span> <span class="n">useful</span><span class="p">,</span>
-<span class="n">but</span> <span class="n">WITHOUT</span> <span class="n">ANY</span> <span class="n">WARRANTY</span><span class="p">;</span> <span class="n">without</span> <span class="n">even</span> <span class="n">the</span> <span class="n">implied</span> <span class="n">warranty</span> <span class="n">of</span>
-<span class="n">MERCHANTABILITY</span> <span class="n">or</span> <span class="n">FITNESS</span> <span class="n">FOR</span> <span class="n">A</span> <span class="n">PARTICULAR</span> <span class="n">PURPOSE</span><span class="p">.</span>  <span class="n">See</span> <span class="n">the</span>
-<span class="n">GNU</span> <span class="n">Affero</span> <span class="n">General</span> <span class="n">Public</span> <span class="n">License</span> <span class="k">for</span> <span class="n">more</span> <span class="n">details</span><span class="p">.</span>
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Affero General Public License for more details.
 
-<span class="n">You</span> <span class="n">should</span> <span class="n">have</span> <span class="n">received</span> <span class="n">a</span> <span class="n">copy</span> <span class="n">of</span> <span class="n">the</span> <span class="n">GNU</span> <span class="n">Affero</span> <span class="n">General</span> <span class="n">Public</span> <span class="n">License</span>
-<span class="n">along</span> <span class="n">with</span> <span class="n">this</span> <span class="n">program</span><span class="p">.</span>  <span class="n">If</span> <span class="n">not</span><span class="p">,</span> <span class="n">see</span> <span class="o">&lt;</span><span class="n">http</span><span class="o">:</span><span class="c1">//www.gnu.org/licenses/&gt;.</span>
-</pre></div> 
+You should have received a copy of the GNU Affero General Public License
+along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.
+</code></pre> 
 						</div>
 					</div>
 				</div>
