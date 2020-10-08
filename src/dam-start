@@ -1,0 +1,3 @@
+#!/bin/sh
+
+dam-client -ai 5 -remoteentry `cat /etc/SAWROOM_TRACKERS` --portmap 7700:8800,8007:8008,9008:9009

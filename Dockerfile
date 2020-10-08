@@ -44,12 +44,11 @@ ENV PATH=$PATH:/project/sawtooth-core/bin
 
 WORKDIR /project
 
-
 RUN cd /project && \
-	curl -OLsS https://github.com/google/protobuf/releases/download/v3.5.1/protoc-3.5.1-linux-x86_64.zip \
-	&& unzip protoc-3.5.1-linux-x86_64.zip -d protoc3 \
+	curl -OLsS https://github.com/protocolbuffers/protobuf/releases/download/v3.13.0/protoc-3.13.0-linux-x86_64.zip \
+	&& unzip protoc-3.13.0-linux-x86_64.zip -d protoc3 \
 	&& cp -v protoc3/bin/protoc /usr/local/bin \
-	&& rm -rf protoc-3.5.1-linux-x86_64.zip protoc3
+	&& rm -rf protoc-3.13.0-linux-x86_64.zip protoc3
 
 # Sawtooth SDK
 # RUN git clone https://github.com/hyperledger/sawtooth-sdk-python.git /project/sawtooth-sdk-python
