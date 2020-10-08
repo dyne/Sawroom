@@ -154,12 +154,16 @@ RUN chmod -R go-rwx /etc/tor && chown -R sawroom:sawroom /etc/tor \
 	&& rm -rf /var/lib/tor/data && chown -R sawroom:sawroom /var/lib/tor \
     && cp /root/go/bin/dam* /usr/bin
 
+RUN chown -R sawroom:sawroom /etc/sawtooth \
+	&& chmod o-rwx /etc/sawtooth/keys
+
 WORKDIR /project
 
 # petition transaction middleware
 RUN pip3 install 'fastapi[all]' && pip3 install hypercorn
 
 RUN echo $SAWROOM_TRACKERS > /etc/SAWROOM_TRACKERS
+RUN echo $SAWROOM_GENESIS  > /etc/SAWROOM_GENESIS
 COPY src/supervisord.conf  /etc/supervisor/supervisord.conf
 COPY src/sawroom-validator /usr/local/bin/sawroom-validator
 COPY src/sawroom-start     /usr/local/bin/sawroom-start
