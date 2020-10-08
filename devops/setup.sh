@@ -31,3 +31,7 @@ ssh $H chown -R sawroom:sawroom /var/run/tor /var/lib/tor /var/log/tor
 
 print "Installation completed, rebooting..."
 ssh $H init 6
+
+mkdir -p /var/lib/tor /var/log/tor
+chown -R sawroom:sawroom /var/lib/tor /var/log/tor
+supervisorctl restart all

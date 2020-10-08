@@ -137,21 +137,20 @@ RUN apt-get install -y -q golang redis-server redis-tools tor nyx
 RUN useradd -ms /bin/zsh sawroom
 
 # Configure Tor Controlport auth
-ENV	TORDAM_GIT=github.com/decodeproject/tor-dam
+ENV	TORDAM_GIT=github.com/dyne/tor-dam
+COPY src/torrc /etc/tor/torrc
 RUN torpass=`echo "print(OCTET.random(16):url64())" | zenroom` \
-	&& go get -v -u $TORDAM_GIT/... && cd ~/go/src/github.com/decodeproject/tor-dam \
+	&& go get -v -u $TORDAM_GIT/... && cd ~/go/src/github.com/dyne/tor-dam \
 	&& sed -i python/damhs.py -e "s/topkek/$torpass/" \
 	&& make install && make -C contrib install-init \
-	&& torpasshash=`HOME=/var/lib/tor setuidgid debian-tor tor --quiet --hash-password "$torpass"` \
-	&& sed -e 's/User tor/User sawroom/' < $HOME/go/src/$TORDAM_GIT/contrib/torrc > /etc/tor/torrc \
+    && torpasshash=`HOME=/var/lib/tor setuidgid debian-tor tor --hash-password "$torpass"` \
 	&& sed -e 's/HashedControlPassword .*//' -i /etc/tor/torrc \
 	&& echo "HashedControlPassword $torpasshash" >> /etc/tor/torrc \
 	&& sed -e 's/Log notice .*/Log notice file \/var\/log\/tor\/tor.log/' -i /etc/tor/torrc
 
-RUN chmod -R go-rwx /etc/tor && chown -R sawroom /etc/tor \
-	&& rm -rf /var/lib/tor/data && chown -R sawroom /var/lib/tor \
-	&& mkdir -p /var/run/tor && chown -R sawroom /var/run/tor
-RUN cp /root/go/bin/dam* /usr/bin
+RUN chmod -R go-rwx /etc/tor && chown -R sawroom:sawroom /etc/tor \
+	&& rm -rf /var/lib/tor/data && chown -R sawroom:sawroom /var/lib/tor \
+    && cp /root/go/bin/dam* /usr/bin
 
 WORKDIR /project
 
@@ -159,7 +158,7 @@ WORKDIR /project
 RUN pip3 install 'fastapi[all]' && pip3 install hypercorn
 
 
-COPY src/supervisord.conf /etc/supervisor/supervisord.conf
+COPY src/supervisord.conf  /etc/supervisor/supervisord.conf
 COPY src/sawroom-validator /usr/local/bin/sawroom-validator
 COPY src/sawroom-start     /usr/local/bin/sawroom-start
 COPY src/sawroom-list      /usr/local/bin/sawroom-list

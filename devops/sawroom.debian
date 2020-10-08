@@ -39,10 +39,12 @@ apt-key add tor.pub.asc
 echo "deb https://deb.torproject.org/torproject.org buster main" > /etc/apt/sources.list.d/tor.list
 apt-get install -y -q golang redis-server redis-tools tor nyx
 useradd -ms /bin/zsh sawroom
-export TORDAM_GIT=github.com/decodeproject/tor-dam
-torpass="$(echo "print(OCTET.random(16):url64())" | zenroom)" && go get -v -u $TORDAM_GIT/... && cd ~/go/src/github.com/decodeproject/tor-dam && sed -i python/damhs.py -e "s/topkek/$torpass/" && make install && make -C contrib install-init && torpasshash="$(HOME=/var/lib/tor setuidgid debian-tor tor --quiet --hash-password "$torpass")" && sed -e 's/User tor/User sawroom/' < $HOME/go/src/$TORDAM_GIT/contrib/torrc > /etc/tor/torrc && sed -e 's/HashedControlPassword .*//' -i /etc/tor/torrc && echo "HashedControlPassword $torpasshash" >> /etc/tor/torrc && sed -e 's/Log notice .*/Log notice file /var/log/tor/tor.log/' -i /etc/tor/torrc
-chmod -R go-rwx /etc/tor && chown -R sawroom /etc/tor && rm -rf /var/lib/tor/data && chown -R sawroom /var/lib/tor && mkdir -p /var/run/tor && chown -R sawroom /var/run/tor
-cp /root/go/bin/dam* /usr/bin
+export TORDAM_GIT=github.com/dyne/tor-dam
+cat << __EOFF__ | base64 -d | bunzip2 > /etc/tor/torrc
+QlpoOTFBWSZTWUO1UvEAADzfgAAQQAH/8D9kWgA+/9+gMADKwNU/USb0SAaD1GmNJo00Gn6oCKYQ0NGgADIAAANVP0yJPRlNpqD1DQAADySWqZoPM24Swu/ePaKJ1QyTaPWDN+bTCikWhENhpjFHHKIbalJKlcBgN4rRLXxIOVANsAJxpzmUkLpjsjrpEDxsCKoeNd0AYbnX2MG2Ja0EV/b02P8z4yKOQZ0Z3qfqeiuXFFOiS3hRtIT8Hel12RpbFB8dJPQUt7V7yWLZlM6gTnYjgMNYVto5oiVd6VBqxlJJRwz2UYo1wEoLBSKw3BaBm5GsRX8XckU4UJBDtVLx
+__EOFF__
+torpass="$(echo "print(OCTET.random(16):url64())" | zenroom)" && go get -v -u $TORDAM_GIT/... && cd ~/go/src/github.com/dyne/tor-dam && sed -i python/damhs.py -e "s/topkek/$torpass/" && make install && make -C contrib install-init     && torpasshash="$(HOME=/var/lib/tor setuidgid debian-tor tor --hash-password "$torpass")" && sed -e 's/HashedControlPassword .*//' -i /etc/tor/torrc && echo "HashedControlPassword $torpasshash" >> /etc/tor/torrc && sed -e 's/Log notice .*/Log notice file /var/log/tor/tor.log/' -i /etc/tor/torrc
+chmod -R go-rwx /etc/tor && chown -R sawroom:sawroom /etc/tor && rm -rf /var/lib/tor/data && chown -R sawroom:sawroom /var/lib/tor     && cp /root/go/bin/dam* /usr/bin
 mkdir -p /project && cd /project
 pip3 install 'fastapi[all]' && pip3 install hypercorn
 cat << __EOFF__ | base64 -d | bunzip2 > /etc/supervisor/supervisord.conf
