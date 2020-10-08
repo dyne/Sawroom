@@ -20,8 +20,7 @@ command -v sawroom-seeds > /dev/null || {
 print "GENESIS"
 print "sawtooth.consensus.algorithm.name=pbft"
 print "sawtooth.consensus.algorithm.version=1.0"
-print
-print "Please input 4 valid sawroom verifiers:"
+
 # TODO: validity check if existing points on secp256k1 curve using zenroom
 # 	if [[ -r $K/validator.priv ]]; then
 # 		sksaw=`cat $K/validator.priv`
@@ -33,17 +32,9 @@ print "Please input 4 valid sawroom verifiers:"
 # EOF
 # 		pksaw=`cat $K/validator.pub`
 # 	else
+# seeds="["
 
-read first
-read second
-read third
-read fourth
-seeds="["
-for i in ($first $second $third $fourth); do
-	seeds="${out}\"${i}\","
-done
-seeds[${#seeds}]="]"
-
+seeds=`sawroom-seeds SAW`
 print "sawtooth.consensus.pbft.members=$seeds"
 
 # sawset genesis
