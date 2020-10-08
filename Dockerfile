@@ -1,6 +1,9 @@
 FROM dyne/devuan:beowulf
 ENV debian buster
 
+ENV SAWROOM_TRACKERS https://sawroom.dyne.org/testnet.txt
+ENV SAWROOM_GENESIS  https://sawroom.dyne.org/testnet-genesis.txt
+
 LABEL maintainer="Denis Roio <jaromil@dyne.org>" \
 	  homepage="https://sawroom.dyne.org"
 
@@ -156,7 +159,7 @@ WORKDIR /project
 # petition transaction middleware
 RUN pip3 install 'fastapi[all]' && pip3 install hypercorn
 
-
+RUN echo $SAWROOM_TRACKERS > /etc/SAWROOM_TRACKERS
 COPY src/supervisord.conf  /etc/supervisor/supervisord.conf
 COPY src/sawroom-validator /usr/local/bin/sawroom-validator
 COPY src/sawroom-start     /usr/local/bin/sawroom-start
@@ -168,8 +171,10 @@ COPY src/genesis-import    /usr/local/bin/genesis-import
 COPY src/genesis-export    /usr/local/bin/genesis-export
 COPY src/keys-create       /usr/local/bin/keys-create
 COPY src/keys-export       /usr/local/bin/keys-export
+COPY src/dam-start         /usr/local/bin/dam-start
 
 RUN    echo "127.0.0.1 validator" >> /etc/hosts \
 	&& echo "127.0.0.1 rest-api" >> /etc/hosts
+
 CMD /etc/init.d/supervisor start
 
