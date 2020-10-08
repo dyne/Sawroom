@@ -79,8 +79,8 @@ RUN apt-get install -y -q libssl-dev libzmq3-dev torsocks
 
 ## Sawtooth Validator
 RUN cd /project && \
-	wget https://github.com/hyperledger/sawtooth-core/archive/v1.2.5.tar.gz \
-	&& tar xvf v1.2.5.tar.gz && ln -s sawtooth-core-1.2.5 sawtooth-core \
+	wget https://github.com/hyperledger/sawtooth-core/archive/v1.99.0.tar.gz \
+	&& tar xvf v1.99.0.tar.gz && ln -s sawtooth-core-1.99.0 sawtooth-core \
 	&& cd /project/sawtooth-core && ./bin/protogen \
 	&& cd /project/sawtooth-core/validator && cargo build
 # Install Sawtooth Validator (rust and python)
