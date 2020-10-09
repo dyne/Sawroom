@@ -82,11 +82,11 @@ RUN cd /project && \
 	wget https://github.com/hyperledger/sawtooth-core/archive/v1.99.0.tar.gz \
 	&& tar xvf v1.99.0.tar.gz && ln -s sawtooth-core-1.99.0 sawtooth-core \
 	&& cd /project/sawtooth-core && ./bin/protogen \
-	&& cd /project/sawtooth-core/validator && cargo build
+	&& cd /project/sawtooth-core/validator && cargo build --release
 # Install Sawtooth Validator (rust and python)
 RUN cd /project/sawtooth-core && pip3 install -e validator \
-	&& cp validator/target/debug/sawtooth-validator /usr/local/bin \
-	&& cp validator/target/debug/libsawtooth_validator.so /usr/local/lib \
+	&& cp validator/target/release/sawtooth-validator /usr/local/bin \
+	&& cp validator/target/release/libsawtooth_validator.so /usr/local/lib \
 	&& ldconfig
 
 ## Sawtooth admin cli: sawadm and sawset
@@ -95,11 +95,14 @@ RUN cd /project/sawtooth-core && pip3 install -e cli
 
 RUN cd /project/sawtooth-core && pip3 install -e rest_api
 
-RUN cd /project/sawtooth-core/families/settings/sawtooth_settings && cargo build \
-	&& cp -v ./target/debug/settings-tp /usr/local/bin/settings-tp
+RUN cd /project/sawtooth-core/families/settings/sawtooth_settings && cargo build --release \
+	&& cp -v ./target/release/settings-tp /usr/local/bin/settings-tp
 
-RUN cd /project/sawtooth-core/families/block_info/sawtooth_block_info && cargo build \
-	&& cp -v ./target/debug/block-info-tp /usr/local/bin/block-info-tp
+RUN cd /project/sawtooth-core/families/block_info/sawtooth_block_info && cargo build --release \
+	&& cp -v ./target/release/block-info-tp /usr/local/bin/block-info-tp
+
+RUN cd /project/sawtooth-core/families/identity/sawtooth_identity && cargo build --release \
+	&& cp -v ./target/release/identity-tp /usr/local/bin/identity-tp
 
 # # temet nosce
 # RUN apt-get install -y -q yarnpkg && yarnpkg add gatsby-cli npm
@@ -111,17 +114,16 @@ RUN cd /project/sawtooth-core/families/block_info/sawtooth_block_info && cargo b
 RUN cd /project && \
 	git clone https://github.com/hyperledger/sawtooth-devmode.git \
 	sawtooth-devmode && cd /project/sawtooth-devmode \
-	&& cargo build
-RUN cp /project/sawtooth-devmode/target/debug/devmode-engine-rust /usr/local/bin
+	&& cargo build --release
+RUN cp /project/sawtooth-devmode/target/release/devmode-engine-rust /usr/local/bin
 
 RUN cd /project && \
 	wget https://github.com/hyperledger/sawtooth-pbft/archive/v1.0.3.tar.gz \
 	&& tar xfz v1.0.3.tar.gz && ln -s sawtooth-pbft-1.0.3 sawtooth-pbft \
     && ls -l \
 	&& cd /project/sawtooth-pbft \
-    && cargo build
-RUN cp /project/sawtooth-pbft/target/debug/pbft-engine /usr/local/bin
-
+    && cargo build --release
+RUN cp /project/sawtooth-pbft/target/release/pbft-engine /usr/local/bin
 
 ENV DYNESDK=https://sdk.dyne.org:4443/job \
 	NETDATA_VERSION=1.10.0 \
