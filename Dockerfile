@@ -82,7 +82,7 @@ RUN cd /project && \
 	wget https://github.com/hyperledger/sawtooth-core/archive/v1.99.0.tar.gz \
 	&& tar xvf v1.99.0.tar.gz && ln -s sawtooth-core-1.99.0 sawtooth-core \
 	&& cd /project/sawtooth-core && ./bin/protogen \
-	&& cd /project/sawtooth-core/validator && cargo build --release
+	&& cd /project/sawtooth-core/validator && cargo build --color never --release
 # Install Sawtooth Validator (rust and python)
 RUN cd /project/sawtooth-core && pip3 install -e validator \
 	&& cp validator/target/release/sawtooth-validator /usr/local/bin \
@@ -95,13 +95,13 @@ RUN cd /project/sawtooth-core && pip3 install -e cli
 
 RUN cd /project/sawtooth-core && pip3 install -e rest_api
 
-RUN cd /project/sawtooth-core/families/settings/sawtooth_settings && cargo build --release \
+RUN cd /project/sawtooth-core/families/settings/sawtooth_settings && cargo build --color never --release \
 	&& cp -v ./target/release/settings-tp /usr/local/bin/settings-tp
 
-RUN cd /project/sawtooth-core/families/block_info/sawtooth_block_info && cargo build --release \
+RUN cd /project/sawtooth-core/families/block_info/sawtooth_block_info && cargo build --color never --release \
 	&& cp -v ./target/release/block-info-tp /usr/local/bin/block-info-tp
 
-RUN cd /project/sawtooth-core/families/identity/sawtooth_identity && cargo build --release \
+RUN cd /project/sawtooth-core/families/identity/sawtooth_identity && cargo build --color never --release \
 	&& cp -v ./target/release/identity-tp /usr/local/bin/identity-tp
 
 # # temet nosce
@@ -114,7 +114,7 @@ RUN cd /project/sawtooth-core/families/identity/sawtooth_identity && cargo build
 RUN cd /project && \
 	git clone https://github.com/hyperledger/sawtooth-devmode.git \
 	sawtooth-devmode && cd /project/sawtooth-devmode \
-	&& cargo build --release
+	&& cargo build --color never --release
 RUN cp /project/sawtooth-devmode/target/release/devmode-engine-rust /usr/local/bin
 
 RUN cd /project && \
@@ -122,7 +122,7 @@ RUN cd /project && \
 	&& tar xfz v1.0.3.tar.gz && ln -s sawtooth-pbft-1.0.3 sawtooth-pbft \
     && ls -l \
 	&& cd /project/sawtooth-pbft \
-    && cargo build --release
+    && cargo build --color never --release
 RUN cp /project/sawtooth-pbft/target/release/pbft-engine /usr/local/bin
 
 ENV DYNESDK=https://sdk.dyne.org:4443/job \

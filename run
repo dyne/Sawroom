@@ -41,10 +41,8 @@ if [ "$1" = "" ]; then
 		   --mount type=bind,source="$src"/keys/tor,destination=/var/lib/tor \
 		   --mount type=bind,source="$src"/log/sawtooth,destination=/var/log/sawtooth \
 		   --mount type=bind,source="$src"/log/tor,destination=/var/log/tor \
-		   -p 9001:9001 \
 		   -p 8008:8008 \
 		   -p 9009:9009 \
-		   -p 19999:19999 \
 		   dyne/sawroom:testnet sawroom-start $ID
 else
 	docker run -it \
@@ -53,9 +51,7 @@ else
 		   --mount type=bind,source="$src"/keys/tor,destination=/var/lib/tor \
 		   --mount type=bind,source="$src"/log/sawtooth,destination=/var/log/sawtooth \
 		   --mount type=bind,source="$src"/log/tor,destination=/var/log/tor \
-		   -p 9001:9001 \
 		   -p 8008:8008 \
 		   -p 9009:9009 \
-		   -p 19999:19999 \
 		   dyne/sawroom:testnet $*
 fi
