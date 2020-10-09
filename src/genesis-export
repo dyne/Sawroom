@@ -4,10 +4,6 @@ D=/var/lib/sawtooth
 
 echo "-----BEGIN SAWROOM PUBLIC GENESIS BLOCK-----"
 echo
-tar -cf - \
-	$D/config-genesis.batch \
-	$D/config.batch \
-	$D/genesis.batch 2>/dev/null \
-	| bzip2 -9 | base64
+cat $D/genesis.batch | bzip2 -9 | base64
 echo
 echo "-----END SAWROOM PUBLIC GENESIS BLOCK-----"

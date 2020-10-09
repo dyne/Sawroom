@@ -38,13 +38,13 @@ seeds=`sawroom-seeds SAW`
 print "sawtooth.consensus.pbft.members=$seeds"
 
 # sawset genesis
-sawset genesis -k $K/validator.priv -o $R/config-genesis.batch
+sawset genesis -k $K/client.priv -o $R/config-genesis.batch
 sawset proposal create \
-	   -k $K/validator.priv \
+	   -k $K/client.priv \
 	   sawtooth.consensus.algorithm.name=pbft \
 	   sawtooth.consensus.algorithm.version=1.0 \
 	   sawtooth.consensus.pbft.members=$seeds \
 	   sawtooth.validator.batch_injectors=block_info -o $R/config.batch
 # output in /var/lib/sawtooth/genesis.batch
 sawadm genesis $R/config-genesis.batch $R/config.batch
-
+genesis-export

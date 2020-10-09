@@ -6,5 +6,7 @@ D=/var/lib/tor
 S=/etc/sawtooth/keys
 [[ -r $S/validator.priv ]] || sawadm keygen
 
+[[ -r $S/client.priv ]] || sawtooth keygen --key-dir $S client
+
 sawroom-address
 
