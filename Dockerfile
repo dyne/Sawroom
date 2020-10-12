@@ -135,16 +135,21 @@ ENV DYNESDK=https://sdk.dyne.org:4443/job \
 ADD https://raw.githubusercontent.com/DECODEproject/decode-os/master/docker-sdk/tor.pub.asc tor.pub.asc
 RUN apt-key add tor.pub.asc
 RUN echo "deb https://deb.torproject.org/torproject.org $debian main" > /etc/apt/sources.list.d/tor.list
-RUN apt-get install -y -q golang redis-server redis-tools tor nyx
-
+RUN apt-get install -y -q redis-server redis-tools tor nyx
+RUN wget https://golang.org/dl/go1.15.2.linux-amd64.tar.gz \
+	&& tar -C /usr/local -xzf  go1.15.2.linux-amd64.tar.gz \
+	&& rm go1.15.2.linux-amd64.tar.gz
+ENV PATH=$PATH:/usr/local/go/bin
 
 RUN useradd -ms /bin/zsh sawroom
 
 # Configure Tor Controlport auth
 ENV	TORDAM_GIT=github.com/dyne/tor-dam
+ENV GOPATH=/usr/local
 COPY src/torrc /etc/tor/torrc
 RUN torpass=`echo "print(OCTET.random(16):url64())" | zenroom` \
-	&& go get -v -u $TORDAM_GIT/... && cd ~/go/src/github.com/dyne/tor-dam \
+    && git clone https://$TORDAM_GIT && cd tor-dam \
+    && go build -o /usr/local/bin ./... \
 	&& sed -i python/damhs.py -e "s/topkek/$torpass/" \
 	&& make install && make -C contrib install-init \
     && torpasshash=`HOME=/var/lib/tor setuidgid debian-tor tor --hash-password "$torpass"` \
@@ -153,8 +158,7 @@ RUN torpass=`echo "print(OCTET.random(16):url64())" | zenroom` \
 	&& sed -e 's/Log notice .*/Log notice file \/var\/log\/tor\/tor.log/' -i /etc/tor/torrc
 
 RUN chmod -R go-rwx /etc/tor && chown -R sawroom:sawroom /etc/tor \
-	&& rm -rf /var/lib/tor/data && chown -R sawroom:sawroom /var/lib/tor \
-    && cp /root/go/bin/dam* /usr/bin
+	&& rm -rf /var/lib/tor/data && chown -R sawroom:sawroom /var/lib/tor
 
 RUN chown -R sawroom:sawroom /etc/sawtooth \
 	&& chmod o-rwx /etc/sawtooth/keys
