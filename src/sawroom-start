@@ -1,15 +1,14 @@
 #!/usr/bin/env zsh
 
 [[ "$1" == "" ]] || {
-	print "Starting Sawroom as ID $1"
+	print "Starting Sawroom as UID $1"
 	sed -e "s/1000/$1/" -i /etc/passwd
 }
 
-# [[ -r /var/lib/sawtooth/block-chain-id ]] || {
-# 	genesis=`cat /etc/SAWROOM_GENESIS`
-# 	print "First run, importing genesis from: $genesis"
-# 	curl $genesis | genesis-import
-# }
+[[ "$2" == "" ]] || {
+	print "Advertised endpoint: $2"
+	sed -e "s/OWNIP/$2/" -i /usr/local/bin/sawroom-validator
+}
 
 /etc/init.d/supervisor start
 
