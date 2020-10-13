@@ -5,11 +5,11 @@
 	sed -e "s/1000/$1/" -i /etc/passwd
 }
 
-[[ -r /var/lib/sawtooth/block-chain-id ]] || {
-	genesis=`cat /etc/SAWROOM_GENESIS`
-	print "First run, importing genesis from: $genesis"
-	curl $genesis | genesis-import
-}
+# [[ -r /var/lib/sawtooth/block-chain-id ]] || {
+# 	genesis=`cat /etc/SAWROOM_GENESIS`
+# 	print "First run, importing genesis from: $genesis"
+# 	curl $genesis | genesis-import
+# }
 
 /etc/init.d/supervisor start
 
