@@ -18,7 +18,6 @@ peering = "static"
 endpoint = "tcp://OWNIP:8800"
 peers = $(sawroom-seeds $mode)
 scheduler = 'serial'
-network_auth = 'trust'
 network_public_key = 'wFMwoOt>yFqI/ek.G[tfMMILHWw#vXB[Sv}>l>i)'
 network_private_key = 'r&oJ5aQDj4+V]p2:Lz70Eu0x#m%IwzBdP(}&hWM*'
 minimum_peer_connectivity = 3
