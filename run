@@ -8,7 +8,7 @@ touch $src/.keep || return 1
 #    src=$(pwd)
 # fi
 ID=$(id -ru)
-OWNIP=$(hostname -I | awk '{print $2}')
+OWNIP=$(hostname -I | awk '{print $1}')
 mkdir -p "$src"/data
 mkdir -p "$src"/keys/sawtooth "$src"/keys/tor
 mkdir -p "$src"/log/sawtooth "$src"/log/tor
