@@ -23,11 +23,7 @@ cat <<EOF
 \__ \/ _ \ \/\/ /|   / (_) | (_) | |\/| |
 |___/_/ \_\_/\_/ |_|_\\___/ \___/|_|  |_|
 
-Started full node, local consoles links:
-
-Service supervisor: https://127.0.0.1:9001
-
-Netdata monitor: http://127.0.0.1:19999
+Started full node, process control via supervisorctl
 
 Execute ./shell to step into the running container
 Hit Ctrl-C to stop
