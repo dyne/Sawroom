@@ -21,7 +21,7 @@ scheduler = 'serial'
 network_public_key = 'wFMwoOt>yFqI/ek.G[tfMMILHWw#vXB[Sv}>l>i)'
 network_private_key = 'r&oJ5aQDj4+V]p2:Lz70Eu0x#m%IwzBdP(}&hWM*'
 minimum_peer_connectivity = 3
-maximum_peer_connectivity = 10
+maximum_peer_connectivity = 1000
 EOF
 
 if [[ "$mode" == "TOR" ]]; then
