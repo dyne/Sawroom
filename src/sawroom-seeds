@@ -31,4 +31,4 @@ elif [[ "$pfx" == "IP4" ]]; then
 	done
 fi
 out[${#out}]="]"
-print "'$out'"
+print "$out"
