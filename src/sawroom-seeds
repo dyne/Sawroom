@@ -17,7 +17,7 @@ if [[ "$pfx" == "SAW" ]]; then
 	done
 elif [[ "$pfx" == "DIR" ]]; then
 	for i in $seeds; do
-		out="${out}\"tcp://${i}:7700\","
+		out="${out}\"tcp://${i}:8800\","
 	done
 fi
 out[${#out}]="]"

@@ -54,5 +54,6 @@ else
 		   --mount type=bind,source="$src"/log/tor,destination=/var/log/tor \
 		   -p 8008:8008 \
 		   -p 9009:9009 \
+		   -p 8800:8800 \
 		   dyne/sawroom:testnet $*
 fi
