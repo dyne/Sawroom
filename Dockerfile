@@ -82,7 +82,11 @@ RUN cd /project && \
 	wget https://github.com/hyperledger/sawtooth-core/archive/v1.2.5.tar.gz \
 	&& tar xvf v1.2.5.tar.gz && ln -s sawtooth-core-1.2.5 sawtooth-core \
 	&& cd /project/sawtooth-core && ./bin/protogen \
-	&& cd /project/sawtooth-core/validator && cargo build --color never --release
+	&& cd /project/sawtooth-core/validator
+	&& sed -i -e 's/heartbeat_interval=10/heartbeat_interval=60/' \
+	-e 's/connection_timeout=60/connection_timeout=360/' \
+	sawtooth_validator/networking/interconnect.py \
+	&& cargo build --color never --release
 # Install Sawtooth Validator (rust and python)
 RUN cd /project/sawtooth-core && pip3 install -e validator \
 	&& cp validator/target/release/sawtooth-validator /usr/local/bin \
