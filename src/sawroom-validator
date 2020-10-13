@@ -24,7 +24,13 @@ minimum_peer_connectivity = 3
 maximum_peer_connectivity = 10
 EOF
 
-torsocks sawtooth-validator $SAWTOOTH_VALIDATOR_ARGS
+if [[ "$mode" == "TOR" ]]; then
+	torsocks sawtooth-validator $SAWTOOTH_VALIDATOR_ARGS
+else
+	sawtooth-validator $SAWTOOTH_VALIDATOR_ARGS
+fi
+
+
 
                    # --endpoint       tcp://127.0.0.1:8800 \
                    # --bind component:tcp://127.0.0.1:4004 \
