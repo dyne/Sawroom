@@ -31,7 +31,7 @@ su - sawroom
 EOF
 cat <<EOF > /home/sawroom/.zshrc
 #!/bin/sh
-cd sawroom && ./shell
+cd $HOME/sawroom && ./shell
 EOF
 if ! [ -r /home/sawroom/sawroom ]; then
 	git clone https://github.com/dyne/sawroom /home/sawroom/sawroom
