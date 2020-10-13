@@ -82,7 +82,7 @@ RUN cd /project && \
 	wget https://github.com/hyperledger/sawtooth-core/archive/v1.2.5.tar.gz \
 	&& tar xvf v1.2.5.tar.gz && ln -s sawtooth-core-1.2.5 sawtooth-core \
 	&& cd /project/sawtooth-core && ./bin/protogen \
-	&& cd /project/sawtooth-core/validator
+	&& cd /project/sawtooth-core/validator \
 	&& sed -i -e 's/heartbeat_interval=10/heartbeat_interval=60/' \
 	-e 's/connection_timeout=60/connection_timeout=360/' \
 	sawtooth_validator/networking/interconnect.py \
