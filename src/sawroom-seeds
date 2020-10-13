@@ -8,7 +8,7 @@
 
 pfx=${1:-"SAW"}
 url=`cat /etc/SAWROOM_TRACKERS`
-torport=8800 # configured in dam-client
+port=8800 # configured in dam-client
 seeds=(`curl -s $url | grep "^${pfx}" | cut -d: -f2`)
 
 out="["
@@ -16,11 +16,18 @@ if [[ "$pfx" == "SAW" ]]; then
 	for i in $seeds; do
 		out="${out}\"${i}\","
 	done
-elif [[ "$pfx" == "DIR" ]]; then
+elif [[ "$pfx" == "TOR" ]]; then
 	# remove own onion address
 	seeds=("${(@)seeds:#`cat /var/lib/tor/.dam/hostname`}")
 	for i in $seeds; do
-		out="${out}\"tcp://${i}:${torport}\","
+		out="${out}\"tcp://${i}:${port}\","
+	done
+elif [[ "$pfx" == "IP4" ]]; then
+	# remove own ipv4 address
+	own=${"$(hostname -I)"[(w)1]}
+	seeds=("${(@)seeds:#$own}")
+	for i in $seeds; do
+		out="${out}\"tcp://${i}:${port}\","
 	done
 fi
 out[${#out}]="]"

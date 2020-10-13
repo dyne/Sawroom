@@ -1,9 +1,6 @@
 FROM dyne/devuan:beowulf
 ENV debian buster
 
-ENV SAWROOM_TRACKERS https://sawroom.dyne.org/testnet.txt
-ENV SAWROOM_GENESIS  https://sawroom.dyne.org/testnet-genesis.txt
-
 LABEL maintainer="Denis Roio <jaromil@dyne.org>" \
 	  homepage="https://sawroom.dyne.org"
 
@@ -169,8 +166,14 @@ WORKDIR /project
 # petition transaction middleware
 RUN pip3 install 'fastapi[all]' && pip3 install hypercorn
 
+# SAWROOM BUILD CONFIGURATION
+ENV SAWROOM_TRACKERS https://sawroom.dyne.org/testnet.txt
+# ENV SAWROOM_GENESIS  https://sawroom.dyne.org/testnet-genesis.txt
+ENV SAWROOM_NETWORK  IP4
+
 RUN echo $SAWROOM_TRACKERS > /etc/SAWROOM_TRACKERS
-RUN echo $SAWROOM_GENESIS  > /etc/SAWROOM_GENESIS
+# RUN echo $SAWROOM_GENESIS  > /etc/SAWROOM_GENESIS
+RUN echo $SAWROOM_NETWORK  > /etc/SAWROOM_NETWORK
 COPY src/supervisord.conf  /etc/supervisor/supervisord.conf
 COPY src/sawroom-validator /usr/local/bin/sawroom-validator
 COPY src/sawroom-start     /usr/local/bin/sawroom-start

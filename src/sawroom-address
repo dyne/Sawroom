@@ -20,5 +20,6 @@ else
 	echo "Sawtooth keys not found"
 fi
 
-[[ "$dam" != "" ]] && echo "Dam onion address: $dam"
-[[ "$pksaw" != "" ]] &&	echo "Sawtooth verifier: $pksaw"
+[[ "$dam" != "" ]] && echo "TOR:$dam"
+[[ "$pksaw" != "" ]] &&	echo "SAW:$pksaw"
+echo "IP4:${"$(hostname -I)"[(w)1]}"

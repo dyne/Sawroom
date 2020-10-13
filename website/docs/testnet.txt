@@ -1,15 +1,19 @@
 # Sawroom testnet 1
-DIR:atr2cqgvh3mpgvai2m4od6nj7sckhqdaywyvyz4toj4crqpm4mrcpeid.onion
+TOR:atr2cqgvh3mpgvai2m4od6nj7sckhqdaywyvyz4toj4crqpm4mrcpeid.onion
 SAW:02925dcc824b45fad146cfe478f475a836d7c91db314f594b5da1ea9e855dbe034
+IP4:195.201.42.48
 
 # Sawroom testnet 2
-DIR:m4ymjjwrnyud5lcrs6u3ojpielzfeubasr4hewl2q7e3ekivyoxrloid.onion
+TOR:m4ymjjwrnyud5lcrs6u3ojpielzfeubasr4hewl2q7e3ekivyoxrloid.onion
 SAW:02595ef3a9e892593025ca8768a76ca981b7c13e6763ecee2e902151233d9de89a
+IP4:195.201.41.35
 
 # Sawroom testnet 3
-DIR:cjx24et72otmxfiew6xr3yeeha3rl2izmtymwdsj7cxud2pudc7cduid.onion
+TOR:cjx24et72otmxfiew6xr3yeeha3rl2izmtymwdsj7cxud2pudc7cduid.onion
 SAW:029ef5e2f47537f48cf8aadfa4cea6c99c0983aa2eae17a76dac11199a17c5ee22
+IP4:78.47.57.24
 
 # Sawroom testnet 4
-DIR:s3xsybcycj25e5r3wswnpw2coaf5pz225yac7vzd6lfoenlfpmeulgad.onion
+TOR:s3xsybcycj25e5r3wswnpw2coaf5pz225yac7vzd6lfoenlfpmeulgad.onion
 SAW:02ce1582fad33e1ccb1ef4d9ef97acca9dd6dac421959db51fcbbfeb045b5bec75
+IP4:78.47.125.234

@@ -34,7 +34,8 @@ print "sawtooth.consensus.algorithm.version=1.0"
 # 	else
 # seeds="["
 
-seeds=`sawroom-seeds SAW`
+mode=`cat /etc/SAWROOM_NETWORK`
+seeds=`sawroom-seeds $mode`
 print "sawtooth.consensus.pbft.members=$seeds"
 
 # sawset genesis
