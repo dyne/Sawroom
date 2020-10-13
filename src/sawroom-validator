@@ -22,7 +22,7 @@ minimum_peer_connectivity = 3
 maximum_peer_connectivity = 10
 EOF
 
-torsocks sawtooth-validator
+torsocks sawtooth-validator $SAWTOOTH_VALIDATOR_ARGS
 
                    # --endpoint       tcp://127.0.0.1:8800 \
                    # --bind component:tcp://127.0.0.1:4004 \
