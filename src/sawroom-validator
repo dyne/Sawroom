@@ -27,7 +27,7 @@ bind = [
 ]
 peering = "static"
 endpoint = "tcp://`cat /etc/SAWROOM_ENDPOINT`:8800"
-scheduler = 'serial'
+scheduler = "parallel"
 network_public_key = 'wFMwoOt>yFqI/ek.G[tfMMILHWw#vXB[Sv}>l>i)'
 network_private_key = 'r&oJ5aQDj4+V]p2:Lz70Eu0x#m%IwzBdP(}&hWM*'
 minimum_peer_connectivity = 3
