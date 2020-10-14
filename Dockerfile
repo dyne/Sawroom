@@ -141,9 +141,12 @@ RUN apt-get install -y -q redis-server redis-tools tor nyx
 RUN useradd -ms /bin/zsh sawroom
 
 ENV	TORDAM_GIT=github.com/dyne/tor-dam
-RUN wget -q https://files.dyne.org/tor-dam/nightly/dam-client \
-	&& wget -q https://files.dyne.org/tor-dam/nightly/dam-dir \
+
+# Download latest tor-dam binaries from files.dyne.org
+RUN wget -q https://files.dyne.org/tor-dam/nightly/dam-client  \
+	&& wget -q https://files.dyne.org/tor-dam/nightly/dam-dir  \
 	&& mv dam-* /usr/local/bin && chmod a+x /usr/local/bin/dam-*
+
 # Configure Tor Controlport auth
 COPY src/torrc /etc/tor/torrc
 RUN torpass=`echo "print(OCTET.random(16):url64())" | zenroom` \
