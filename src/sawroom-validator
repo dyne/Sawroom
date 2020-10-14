@@ -17,7 +17,7 @@ mode=`cat /etc/SAWROOM_NETWORK`
 # https://sawtooth.hyperledger.org/docs/core/nightly/1-2/sysadmin_guide/off_chain_settings.html#configure-the-validator
 cat <<EOF > /etc/sawtooth/validator.toml
 bind = [
-  "network:tcp://127.0.0.1:8800",
+  "network:tcp://0.0.0.0:8800",
   "component:tcp://127.0.0.1:4004",
   "consensus:tcp://127.0.0.1:5050"
 ]
