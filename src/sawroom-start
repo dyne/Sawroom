@@ -7,6 +7,7 @@
 
 [[ "$2" == "" ]] || {
 	print "Advertised endpoint: $2"
+	echo "$2" > /etc/SAWROOM_ENDPOINT
 	sed -e "s/OWNIP/$2/" -i /usr/local/bin/sawroom-validator
 }
 

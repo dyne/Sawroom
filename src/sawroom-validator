@@ -3,6 +3,13 @@
 R=/etc/sawtooth
 PATH=$PATH:$HOME
 
+[ -r /etc/SAWROOM_ENDPOINT ] || {
+	print "Error: no advertised endpoint specified (external IP)"
+	print "Please use the sawroom/run script to start."
+	print "Validator launch aborted."
+	exit 1
+}
+
 [ ! -f $R/keys/validator.priv ] && sawadm keygen
 
 mode=`cat /etc/SAWROOM_NETWORK`
@@ -15,8 +22,8 @@ bind = [
   "consensus:tcp://127.0.0.1:5050"
 ]
 peering = "static"
-endpoint = "tcp://OWNIP:8800"
-peers = $(sawroom-seeds $mode)
+endpoint = "tcp://`cat /etc/SAWROOM_ENDPOINT`:8800"
+speers = $(sawroom-seeds $mode)
 scheduler = 'serial'
 network_public_key = 'wFMwoOt>yFqI/ek.G[tfMMILHWw#vXB[Sv}>l>i)'
 network_private_key = 'r&oJ5aQDj4+V]p2:Lz70Eu0x#m%IwzBdP(}&hWM*'

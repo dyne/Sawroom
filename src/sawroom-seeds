@@ -7,7 +7,10 @@
 # arguments: SAW or DIR
 
 pfx=${1:-"SAW"}
-url=`cat /etc/SAWROOM_TRACKERS`
+url="https://sawroom.dyne.org/testnet.txt"
+[[ -r /etc/SAWROOM_TRACKERS ]] &&
+	url=`cat /etc/SAWROOM_TRACKERS`
+
 port=8800 # configured in dam-client
 seeds=(`curl -s $url | grep "^${pfx}" | cut -d: -f2`)
 
@@ -24,7 +27,7 @@ elif [[ "$pfx" == "TOR" ]]; then
 	done
 elif [[ "$pfx" == "IP4" ]]; then
 	# remove own ipv4 address
-	own=${"$(hostname -I)"[(w)1]}
+	own=${"$(cat /etc/SAWROOM_ENDPOINT)"[(w)1]}
 	seeds=("${(@)seeds:#$own}")
 	for i in $seeds; do
 		out="${out}\"tcp://${i}:${port}\","
