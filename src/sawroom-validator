@@ -15,9 +15,13 @@ PATH=$PATH:$HOME
 mode=`cat /etc/SAWROOM_NETWORK`
 
 # https://sawtooth.hyperledger.org/docs/core/nightly/1-2/sysadmin_guide/off_chain_settings.html#configure-the-validator
+
+endpoint_bind=0.0.0.0
+[[ "$mode" == "TOR" ]] && endpoint_bind=127.0.0.1
+
 cat <<EOF > /etc/sawtooth/validator.toml
 bind = [
-  "network:tcp://0.0.0.0:8800",
+  "network:tcp://$endpoint_bind:8800",
   "component:tcp://127.0.0.1:4004",
   "consensus:tcp://127.0.0.1:5050"
 ]
