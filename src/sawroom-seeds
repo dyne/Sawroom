@@ -14,24 +14,28 @@ url="https://sawroom.dyne.org/testnet.txt"
 port=8800 # configured in dam-client
 seeds=(`curl -s $url | grep "^${pfx}" | cut -d: -f2`)
 
-out="["
 if [[ "$pfx" == "SAW" ]]; then
+	out="["
 	for i in $seeds; do
 		out="${out}\"${i}\","
 	done
+	out[${#out}]="]"
 elif [[ "$pfx" == "TOR" ]]; then
 	# remove own onion address
 	seeds=("${(@)seeds:#`cat /var/lib/tor/.dam/hostname`}")
 	for i in $seeds; do
-		out="${out}\"tcp://${i}:${port}\","
+		# inline array for conf
+		# out="${out}\"tcp://${i}:${port}\","
+		# series of commandline options
+		out="$out --peers tcp://${i}:${port}"
 	done
 elif [[ "$pfx" == "IP4" ]]; then
 	# remove own ipv4 address
 	own=${"$(cat /etc/SAWROOM_ENDPOINT)"[(w)1]}
 	seeds=("${(@)seeds:#$own}")
 	for i in $seeds; do
-		out="${out}\"tcp://${i}:${port}\","
+		# out="${out}\"tcp://${i}:${port}\","
+		out="$out --peers tcp://${i}:${port}"
 	done
 fi
-out[${#out}]="]"
 print "$out"
