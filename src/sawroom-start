@@ -1,15 +1,16 @@
 #!/usr/bin/env zsh
 
 [[ "$1" == "" ]] || {
-	print "Starting Sawroom as UID $1"
+	print "UID: $1"
 	sed -e "s/1000/$1/" -i /etc/passwd
 }
 
-[[ "$2" == "" ]] || {
-	print "Advertised endpoint: $2"
+if [[ "`cat /etc/SAWROOM_NETWORK`" == "TOR" ]]; then
+	cat /var/lib/tor/.dam/hostname > /etc/SAWROOM_ENDPOINT
+else
 	echo "$2" > /etc/SAWROOM_ENDPOINT
-	sed -e "s/OWNIP/$2/" -i /usr/local/bin/sawroom-validator
-}
+fi
+print "Endpoint: `cat /etc/SAWROOM_ENDPOINT`"
 
 /etc/init.d/supervisor start
 
