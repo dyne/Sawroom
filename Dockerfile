@@ -156,9 +156,9 @@ RUN torpass=`echo "print(OCTET.random(16):url64())" | zenroom` \
 	&& sed -e 's/Log notice .*/Log notice file \/var\/log\/tor\/tor.log/' -i /etc/tor/torrc
 
 RUN chmod -R go-rwx /etc/tor && chown -R sawroom:sawroom /etc/tor \
-	&& rm -rf /var/lib/tor/data && chown -R sawroom:sawroom /var/lib/tor
-
-RUN chown -R sawroom:sawroom /etc/sawtooth \
+	&& rm -rf /var/lib/tor/data && mkdir -p /var/lib/tor/dam \
+	&& chown -R sawroom:sawroom /var/lib/tor \
+	&& chown -R sawroom:sawroom /etc/sawtooth \
 	&& chmod o-rwx /etc/sawtooth/keys
 
 WORKDIR /project

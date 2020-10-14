@@ -22,7 +22,7 @@ if [[ "$pfx" == "SAW" ]]; then
 	out[${#out}]="]"
 elif [[ "$pfx" == "TOR" ]]; then
 	# remove own onion address
-	seeds=("${(@)seeds:#`cat /var/lib/tor/.dam/hostname`}")
+	seeds=("${(@)seeds:#`cat /var/lib/tor/dam/hostname`}")
 	for i in $seeds; do
 		# inline array for conf
 		# out="${out}\"tcp://${i}:${port}\","

@@ -6,7 +6,7 @@
 }
 
 if [[ "`cat /etc/SAWROOM_NETWORK`" == "TOR" ]]; then
-	cat /var/lib/tor/.dam/hostname > /etc/SAWROOM_ENDPOINT
+	cat /var/lib/tor/dam/hostname > /etc/SAWROOM_ENDPOINT
 else
 	echo "$2" > /etc/SAWROOM_ENDPOINT
 fi

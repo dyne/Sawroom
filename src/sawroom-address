@@ -1,13 +1,13 @@
 #!/usr/bin/env zsh
 
 K=/etc/sawtooth/keys
-L=/var/lib/tor/.dam
+L=/var/lib/tor/dam
 local dam
 local pksaw
 dam=""
 pksaw=""
 
-# see also /var/lib/tor/.dam/hostname
+# see also /var/lib/tor/dam/hostname
 if [[ -r $L/hostname ]]; then
 	dam=`cat $L/hostname`
 else

@@ -1,6 +1,6 @@
 #!/usr/bin/env zsh
 
-D=/var/lib/tor/.dam
+D=/var/lib/tor/dam
 [[ -r $D/dam-private.key ]] && {
 	pushd $D
 	echo
