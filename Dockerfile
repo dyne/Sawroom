@@ -189,6 +189,7 @@ COPY src/genesis-export    /usr/local/bin/genesis-export
 COPY src/keys-create       /usr/local/bin/keys-create
 COPY src/keys-export       /usr/local/bin/keys-export
 COPY src/dam-start         /usr/local/bin/dam-start
+COPY src/update-tp         /usr/local/bin/update-tp
 
 RUN    echo "127.0.0.1 validator" >> /etc/hosts \
 	&& echo "127.0.0.1 rest-api" >> /etc/hosts

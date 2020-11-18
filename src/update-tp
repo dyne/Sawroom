@@ -1,0 +1,15 @@
+#!/bin/sh
+
+head=`git rev-parse --short HEAD`
+cd /project/petition-tp-python
+git pull --rebase
+pull=`git rev-parse --short HEAD`
+if [ "$head" != "pull" ]; then
+	supervisorctl stop transaction-processors:petition-api
+	supervisorctl stop transaction-processors:petition
+	pip3 install -e /project/petition-tp-python/src
+	supervisorctl start transaction-processors:petition
+	supervisorctl start transaction-processors:petition-api
+fi
+cd -
+
