@@ -1,0 +1,65 @@
+#!/usr/bin/env zsh
+
+# simple remote cli for sawroom
+# requires zsh, sed, curl and jq
+
+# default sawroom testnet
+host=195.201.41.35
+chain_port=8008
+api_port=9009
+user=demo
+pass=demo
+
+cmd="$1"
+[[ $1 ]] || {
+	print "usage: zenroom script.zen | ./remote command/path"
+	print " config host, user, pass and ports inside the script"
+	return 1
+}
+
+function json_extract {
+	tmpjq=`mktemp`
+	tmpin=`mktemp`
+	cat > $tmpin
+	cat <<EOF > $tmpjq
+# break out early
+def filter(\$key):
+  label \$out
+  | foreach inputs as \$in ( null;
+      if . == null
+      then if \$in[0][0] == \$key then \$in
+           else empty
+           end
+      elif \$in[0][0] != \$key then break \$out
+      else \$in
+      end;
+      select(length==2) );
+
+reduce filter(\$key) as \$in ({};
+  setpath(\$in[0]; \$in[1]) )
+EOF
+	jq -n -c --arg key "$1" --stream -f $tmpjq $tmpin | sed 's/.*"\(.*\)"[^"]*$/\1/'
+	rm -f $tmpjq
+	rm -f $tmpin
+}
+
+function json_escape() {
+	sed -E 's/([^\]|^)"/\1\\"/g'
+}
+
+# get api auth token
+token=`mktemp`
+curl -X POST "http://${host}:${api_port}/token" -H  "accept: application/json" \
+	 -H  "Content-Type: application/x-www-form-urlencoded" \
+	 -d "grant_type=&username=${user}&password=${pass}" | json_extract access_token > $token
+
+body=`mktemp`
+cat | json_escape > $body
+
+curl -X POST "http://${host}:${api_port}/${cmd}/?address=http%3A%2F%2Flocalhost%3A${chain_port}%2Fbatches" \
+	 -H  "accept: application/json" -H  "Authorization: Bearer `cat $token`" -H  "Content-Type: application/json" \
+	 -d `cat $body`
+
+# cleanup
+rm -f $body
+rm -f $token
