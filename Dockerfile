@@ -59,12 +59,6 @@ RUN cd /project && \
 	&& pip3 install -e /project/sawtooth-sdk-python \
 	&& rm -rf v1.2.3.tar.gz sawtooth-sdk-python-1.2.3 sawtooth-sdk-python
 
-# Petition transaction processor
-# using latest zenroom-tp-python on git
-RUN cd /project && \
-	git clone https://github.com/dyne/petition-tp-python /project/petition-tp-python \
-	&& pip3 install -e /project/petition-tp-python/src
-
 # install zenroom's cli binary and repo for tests
 RUN cd /project && \
 	wget https://files.dyne.org/zenroom/nightly/zenroom-linux-amd64 -O /usr/local/bin/zenroom && chmod +x /usr/local/bin/zenroom
@@ -165,6 +159,12 @@ RUN chmod -R go-rwx /etc/tor && chown -R sawroom:sawroom /etc/tor \
 	&& chmod o-rwx /etc/sawtooth/keys
 
 WORKDIR /project
+
+# Petition transaction processor
+# using latest zenroom-tp-python on git
+RUN cd /project && \
+	git clone https://github.com/dyne/petition-tp-python /project/petition-tp-python \
+	&& pip3 install -e /project/petition-tp-python/src
 
 # petition transaction middleware
 RUN pip3 install 'fastapi[all]' && pip3 install hypercorn
