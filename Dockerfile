@@ -59,6 +59,13 @@ RUN cd /project && \
 	&& pip3 install -e /project/sawtooth-sdk-python \
 	&& rm -rf v1.2.3.tar.gz sawtooth-sdk-python-1.2.3 sawtooth-sdk-python
 
+# Petition transaction processor
+# using latest zenroom-tp-python on git
+RUN cd /project && \
+	git clone https://github.com/dyne/petition-tp-python /project/petition-tp-python \
+	&& pip3 install -e /project/petition-tp-python/src
+ENV PATH=$PATH:/project/petition-tp-python/bin
+
 # install zenroom's cli binary and repo for tests
 RUN cd /project && \
 	wget https://files.dyne.org/zenroom/nightly/zenroom-linux-amd64 -O /usr/local/bin/zenroom && chmod +x /usr/local/bin/zenroom
@@ -71,8 +78,8 @@ RUN pip3 install sawtooth-signing
 
 ## Sawtooth Validator
 RUN cd /project && \
-	wget https://github.com/hyperledger/sawtooth-core/archive/v1.2.6.tar.gz \
-	&& tar xvf v1.2.6.tar.gz && ln -s sawtooth-core-1.2.6 sawtooth-core \
+	wget https://github.com/hyperledger/sawtooth-core/archive/v1.2.5.tar.gz \
+	&& tar xvf v1.2.5.tar.gz && ln -s sawtooth-core-1.2.5 sawtooth-core \
 	&& cd /project/sawtooth-core && ./bin/protogen \
 	&& cd /project/sawtooth-core/validator \
 	&& sed -i -e 's/heartbeat_interval=10/heartbeat_interval=60/' \
@@ -160,13 +167,6 @@ RUN chmod -R go-rwx /etc/tor && chown -R sawroom:sawroom /etc/tor \
 	&& chmod o-rwx /etc/sawtooth/keys
 
 WORKDIR /project
-
-# Petition transaction processor
-# using latest zenroom-tp-python on git
-RUN cd /project && \
-	git clone https://github.com/dyne/petition-tp-python /project/petition-tp-python \
-	&& pip3 install -e /project/petition-tp-python/src
-ENV PATH=$PATH:/project/petition-tp-python/bin
 
 # petition transaction middleware
 RUN pip3 install 'fastapi[all]' && pip3 install hypercorn
