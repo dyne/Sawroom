@@ -61,6 +61,7 @@ RUN cd /project && \
 
 # Petition transaction processor
 # using latest zenroom-tp-python on git
+
 RUN cd /project && \
 	git clone https://github.com/dyne/petition-tp-python /project/petition-tp-python \
 	&& pip3 install -e /project/petition-tp-python/src
@@ -182,6 +183,7 @@ ENV SAWROOM_NETWORK  TOR
 RUN echo $SAWROOM_TRACKERS > /etc/SAWROOM_TRACKERS
 # RUN echo $SAWROOM_GENESIS  > /etc/SAWROOM_GENESIS
 RUN echo $SAWROOM_NETWORK  > /etc/SAWROOM_NETWORK
+COPY src/logrotate.conf    /etc/logrotate.d/sawtooth
 COPY src/supervisord.conf  /etc/supervisor/supervisord.conf
 COPY src/sawroom-validator /usr/local/bin/sawroom-validator
 COPY src/sawroom-start     /usr/local/bin/sawroom-start
