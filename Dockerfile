@@ -40,24 +40,32 @@ RUN mkdir -p /etc/sawtooth/keys \
 	&& mkdir -p /var/lib/sawtooth \
 	&& mkdir -p /var/log/sawtooth
 
-ENV PATH=$PATH:/project/sawtooth-core/bin
+ENV PATH=$PATH:/project/sawtooth-core/bin \
+	DYNESDK=https://sdk.dyne.org:4443/job \
+	STEM_VERSION=1.6.0 \
+	STEM_GIT=https://git.torproject.org/stem.git \
+    PROTOBUF_VERSION=3.14.0 \
+    SAWTOOTH_SDK_VERSION=1.2.3 \
+    SAWTOOTH_CORE_VERSION=1.2.6 \
+    SAWTOOTH_PBFT_VERSION=1.0.3
 
 WORKDIR /project
 
 RUN cd /project && \
-	curl -OLsS https://github.com/protocolbuffers/protobuf/releases/download/v3.13.0/protoc-3.13.0-linux-x86_64.zip \
-	&& unzip protoc-3.13.0-linux-x86_64.zip -d protoc3 \
+	curl -OLsS https://github.com/protocolbuffers/protobuf/releases/download/v$PROTOBUF_VERSION/protoc-$PROTOBUF_VERSION-linux-x86_64.zip \
+	&& unzip protoc-$PROTOBUF_VERSION-linux-x86_64.zip -d protoc3 \
 	&& cp -v protoc3/bin/protoc /usr/local/bin \
-	&& rm -rf protoc-3.13.0-linux-x86_64.zip protoc3
+	&& rm -rf protoc-$PROTOBUF_VERSION-linux-x86_64.zip protoc3
 
 # Sawtooth SDK
 # RUN git clone https://github.com/hyperledger/sawtooth-sdk-python.git /project/sawtooth-sdk-python
 RUN cd /project && \
-	wget https://github.com/hyperledger/sawtooth-sdk-python/archive/v1.2.3.tar.gz \
-	&& tar xf v1.2.3.tar.gz && ln -s sawtooth-sdk-python-1.2.3 sawtooth-sdk-python \
+	wget https://github.com/hyperledger/sawtooth-sdk-python/archive/v$SAWTOOTH_SDK_VERSION.tar.gz \
+	&& tar xf v$SAWTOOTH_SDK_VERSION.tar.gz && \
+	ln -s sawtooth-sdk-python-$SAWTOOTH_SDK_VERSION sawtooth-sdk-python \
     && /project/sawtooth-sdk-python/bin/protogen \
 	&& pip3 install -e /project/sawtooth-sdk-python \
-	&& rm -rf v1.2.3.tar.gz sawtooth-sdk-python-1.2.3 sawtooth-sdk-python
+	&& rm -rf v$SAWTOOTH_SDK_VERSION.tar.gz sawtooth-sdk-python-$SAWTOOTH_SDK_VERSION sawtooth-sdk-python
 
 # Petition transaction processor
 # using latest zenroom-tp-python on git
@@ -79,8 +87,8 @@ RUN pip3 install sawtooth-signing
 
 ## Sawtooth Validator
 RUN cd /project && \
-	wget https://github.com/hyperledger/sawtooth-core/archive/v1.2.5.tar.gz \
-	&& tar xvf v1.2.5.tar.gz && ln -s sawtooth-core-1.2.5 sawtooth-core \
+	wget https://github.com/hyperledger/sawtooth-core/archive/v$SAWTOOTH_CORE_VERSION.tar.gz \
+	&& tar xvf v$SAWTOOTH_CORE_VERSION.tar.gz && ln -s sawtooth-core-$SAWTOOTH_CORE_VERSION sawtooth-core \
 	&& cd /project/sawtooth-core && ./bin/protogen \
 	&& cd /project/sawtooth-core/validator \
 	&& sed -i -e 's/heartbeat_interval=10/heartbeat_interval=60/' \
@@ -122,17 +130,12 @@ RUN cd /project && \
 RUN cp /project/sawtooth-devmode/target/release/devmode-engine-rust /usr/local/bin
 
 RUN cd /project && \
-	wget https://github.com/hyperledger/sawtooth-pbft/archive/v1.0.3.tar.gz \
-	&& tar xfz v1.0.3.tar.gz && ln -s sawtooth-pbft-1.0.3 sawtooth-pbft \
+	wget https://github.com/hyperledger/sawtooth-pbft/archive/v$SAWTOOTH_PBFT_VERSION.tar.gz \
+	&& tar xfz v$SAWTOOTH_PBFT_VERSION.tar.gz && ln -s sawtooth-pbft-$SAWTOOTH_PBFT_VERSION sawtooth-pbft \
     && ls -l \
 	&& cd /project/sawtooth-pbft \
     && cargo build --color never --release
 RUN cp /project/sawtooth-pbft/target/release/pbft-engine /usr/local/bin
-
-ENV DYNESDK=https://sdk.dyne.org:4443/job \
-	NETDATA_VERSION=1.10.0 \
-	STEM_VERSION=1.6.0 \
-	STEM_GIT=https://git.torproject.org/stem.git
 
 
 # Tor repository
