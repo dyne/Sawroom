@@ -8,7 +8,7 @@ H="$1"
 
 print "Installing sawroom on Debian version:"
 ssh $H cat /etc/debian_version
-ssh $H apt-get install -q -y git supervisor daemontools net-tools zsh curl unzip bzip2
+ssh $H apt-get install -q -y git supervisor daemontools net-tools zsh curl unzip bzip2 openntpd
 
 # docker2sh script
 ssh $H mkdir -p /project
