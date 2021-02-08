@@ -170,8 +170,8 @@ RUN chmod -R go-rwx /etc/tor && chown -R sawroom:sawroom /etc/tor \
 	&& chown -R sawroom:sawroom /etc/sawtooth \
 	&& chmod o-rwx /etc/sawtooth/keys
 
-# Configure the network time protocol daemon
-RUN apt-get install openntpd
+# Configure the network time protocol daemon and logrotate
+RUN apt-get -y -q install cron openntpd logrotate
 
 WORKDIR /project
 
