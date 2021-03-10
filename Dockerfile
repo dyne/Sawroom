@@ -75,6 +75,13 @@ RUN cd /project && \
 	&& pip3 install -e /project/petition-tp-python/src
 ENV PATH=$PATH:/project/petition-tp-python/bin
 
+
+# Install the storage-rust-tp
+WORKDIR /project
+RUN git clone https://github.com/dyne/sawroom-storage-tp
+RUN cargo build --release
+RUN cp -v ./target/release/storage-tp /usr/local/bin
+
 # install zenroom's cli binary and repo for tests
 RUN cd /project && \
 	wget https://files.dyne.org/zenroom/nightly/zenroom-linux-amd64 -O /usr/local/bin/zenroom && chmod +x /usr/local/bin/zenroom
