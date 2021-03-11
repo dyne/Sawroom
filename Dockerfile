@@ -79,6 +79,7 @@ ENV PATH=$PATH:/project/petition-tp-python/bin
 # Install the storage-rust-tp
 WORKDIR /project
 RUN git clone https://github.com/dyne/sawroom-storage-tp
+WORKDIR /project/sawroom-storage-tp
 RUN cargo build --release
 RUN cp -v ./target/release/storage-tp /usr/local/bin
 
