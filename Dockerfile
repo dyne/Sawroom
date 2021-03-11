@@ -188,7 +188,7 @@ RUN pip3 install 'fastapi[all]' && pip3 install hypercorn
 # SAWROOM BUILD CONFIGURATION
 ENV SAWROOM_TRACKERS https://sawroom.dyne.org/testnet.txt
 # ENV SAWROOM_GENESIS  https://sawroom.dyne.org/testnet-genesis.txt
-ENV SAWROOM_NETWORK  TOR
+ENV SAWROOM_NETWORK IP4
 
 RUN echo $SAWROOM_TRACKERS > /etc/SAWROOM_TRACKERS
 # RUN echo $SAWROOM_GENESIS  > /etc/SAWROOM_GENESIS
