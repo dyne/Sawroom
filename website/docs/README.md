@@ -8,6 +8,12 @@ The goal is facilitate the creation of transaction families based on Zenroom and
 
 To try the Sawroom setup with a running Sawtooth is best to use Docker.
 
+### Prerequisites
+
+Sawroom's docker image requires **docker 20.10.6** or newer: make sure you don't have an older version and if you do install a latest version from [https://docs.docker.com/engine/install/](https://docs.docker.com/engine/install/).
+
+### Run Sawroom
+
 Our scripts will facilitate the use with some special options that
 will setup a persistent storage on the disk of your host machine
 inside the `/usr/lib/sawroom` directory. All data is saved there and
