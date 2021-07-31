@@ -92,6 +92,14 @@ WORKDIR /project/sawroom-storage-tp
 RUN cargo build --release
 RUN cp -v ./target/release/storage-tp /usr/local/bin
 
+## Install the wallet-tp
+WORKDIR /project
+RUN git clone https://github.com/dyne/sawroom-wallet-tp
+WORKDIR /project/sawroom-wallet-tp
+RUN cargo build --release
+RUN cp -v ./target/release/sawroom-wallet-tp /usr/local/bin
+
+
 ## Sawtooth Validator
 RUN cd /project && \
 	wget https://github.com/hyperledger/sawtooth-core/archive/v$SAWTOOTH_CORE_VERSION.tar.gz \
